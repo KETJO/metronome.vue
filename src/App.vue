@@ -1,32 +1,29 @@
-<template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+<template lang="pug">
+#app
+  Metronome
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Metronome from './components/Metronome';
 
-#nav {
-  padding: 30px;
+export default {
+  name: 'App',
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  components: {
+    Metronome,
+  },
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+  data: () => ({
+    //
+  }),
+};
+</script>
+
+<style lang="sass">
+@import "@/assets/styles/sass/style"
+#app 
+  width: 100%
+  height: 100%
+  background-color: var(--mainDark)
+  font-family: Arial, Helvetica, sans-serif
 </style>

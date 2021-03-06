@@ -1,0 +1,70 @@
+:root {
+	--mainGrad: linear-gradient(180deg, rgba(53,58,64,1) 0%, rgba(35,38,43,1) 35%, rgba(29,30,35,1) 100%);
+	--mainDark: #212529;
+	--akcentLight: #109EF1;
+	--akcentDark: #046BB0;
+	--mainGrey: #74797D;
+
+	--boxShadowDark: #111315;
+	--boxShadowLight: #31373d;
+}
+.neuro-outpressed{
+	background: linear-gradient(145deg, #23282c, #1e2125);
+	box-shadow:  5px 5px 8px var(--boxShadowDark), -2px -5px 10px var(--boxShadowLight);
+	transition: .4s;
+}
+.neuroPressed{
+	background: linear-gradient(145deg, #1e2125, #23282c);
+	box-shadow: inset 0px 15px 20px var(--boxShadowDark), inset 0px -5px 30px var(--boxShadowLight), 5px 5px 10px var(--boxShadowDark), -5px -5px 10px var(--boxShadowLight);
+	transition: .4s;
+}
+.pointer{
+	cursor: pointer;
+}
+/*knob*/
+html {
+	--knobOuter: 200px;
+	--knobInner: 170px;
+}
+path{
+	stroke: transparent!important
+}
+.rs-safari, .rs-control, .rs-svg-mode, .rs-animation{
+	width: var(--knobInner)!important;
+	height: var(--knobInner)!important;
+}
+.rs-container, .rs-full{
+	width: var(--knobInner)!important;
+	height: var(--knobInner)!important;
+}
+.rs-handle {
+	width: 40px!important;
+	height: 40px!important;
+	background: var(--mainDark)!important;
+	box-shadow: inset 0px 15px 20px var(--boxShadowDark), inset 0px -15px 30px var(--boxShadowLight)!important;
+	transform: rotate(-120deg);
+}
+.rs-handle.rs-move {
+	cursor: pointer!important;;
+}
+.rs-tooltip, .rs-tooltip-text, .rs-edit {
+	display: none!important;
+}
+/**/
+.main-btn {
+	width: 60px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: uppercase;
+	font-weight: 800;
+	border-radius: 10px;
+	color: var(--mainGrey);
+}
+.blockSelect {
+	text-decoration: none;
+	-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
