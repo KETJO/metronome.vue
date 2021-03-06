@@ -1,31 +1,87 @@
-:root {
-	--mainGrad: linear-gradient(180deg, rgba(53,58,64,1) 0%, rgba(35,38,43,1) 35%, rgba(29,30,35,1) 100%);
-	--mainDark: #212529;
+html {
+	--mainBg: #212529;
 	--akcentLight: #109EF1;
 	--akcentDark: #046BB0;
 	--mainGrey: #74797D;
 
 	--boxShadowDark: #111315;
 	--boxShadowLight: #31373d;
+
+	--bgOutpressed: #212529;
+	--bgPressed: linear-gradient(145deg, #1e2125, #23282c);
+	
+	--knobOuter: 200px;
+	--knobInner: 170px;
+	color: var(--mainGrey);
 }
-.neuro-outpressed{
-	background: linear-gradient(145deg, #23282c, #1e2125);
-	box-shadow:  5px 5px 8px var(--boxShadowDark), -2px -5px 10px var(--boxShadowLight);
-	transition: .4s;
+html[data-theme="light"] {
+	--mainBg: #ECF0F3;
+
+	--boxShadowDark: #c9cccf;
+	--boxShadowLight: #ffffff;
+
+	--bgOutpressed: #ECF0F3;
+	--bgPressed: linear-gradient(145deg, #d4d8db, #fdffff);
 }
-.neuroPressed{
-	background: linear-gradient(145deg, #1e2125, #23282c);
-	box-shadow: inset 0px 15px 20px var(--boxShadowDark), inset 0px -5px 30px var(--boxShadowLight), 5px 5px 10px var(--boxShadowDark), -5px -5px 10px var(--boxShadowLight);
-	transition: .4s;
+body,
+body *,
+body *:before,
+body *:after {
+	transition: background-color .1s linear, 
+				color .1s linear,
+				box-shadow .1s linear
 }
+/*animation*/
+.fade-enter-active, .fade-leave-active {
+	transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to {
+	opacity: 0;
+}
+/*service*/
 .pointer{
 	cursor: pointer;
 }
-/*knob*/
-html {
-	--knobOuter: 200px;
-	--knobInner: 170px;
+.blockSelect {
+	text-decoration: none;
+	-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
+/**/
+.neuro-outpressed{
+	background: var(--bgOutpressed);
+	box-shadow:  5px 5px 8px var(--boxShadowDark), -2px -5px 10px var(--boxShadowLight);
+}
+.neuroPressed{
+	background: var(--bgPressed);
+	box-shadow: inset 0px 15px 20px var(--boxShadowDark), inset 0px -5px 30px var(--boxShadowLight), 5px 5px 10px var(--boxShadowDark), -5px -5px 10px var(--boxShadowLight);
+}
+.neuroPressed label {
+	color: var(--akcentLight)!important;
+	text-shadow: 0px 0px 25px var(--akcentLight)
+}
+html[data-theme="light"] .neuroPressed label {
+	text-shadow: none
+}
+.textGlow{
+	text-shadow: 0px 0px 25px var(--akcentLight)
+}
+html[data-theme="light"] .textGlow {
+	text-shadow: none;
+}
+.main-btn {
+	width: 60px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: uppercase;
+	font-weight: 800;
+	border-radius: 10px;
+	color: var(--mainGrey);
+}
+/*knob*/
 path{
 	stroke: transparent!important
 }
@@ -50,21 +106,5 @@ path{
 .rs-tooltip, .rs-tooltip-text, .rs-edit {
 	display: none!important;
 }
-/**/
-.main-btn {
-	width: 60px;
-	height: 60px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-transform: uppercase;
-	font-weight: 800;
-	border-radius: 10px;
-	color: var(--mainGrey);
-}
-.blockSelect {
-	text-decoration: none;
-	-webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
+
+

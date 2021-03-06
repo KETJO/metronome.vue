@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/beats-menu',
+    path: '/beatsMenu',
     name: 'BeatsMenu',
     component: BeatsMenu
   }
