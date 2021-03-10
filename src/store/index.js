@@ -5,10 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isPlay: true,
     sizesRange: [2, 4, 8, 16],
     themeDark: true,
-    
+
     currentSong: {
       title:"free mode",
       bpm: 120,
@@ -18,20 +17,22 @@ export default new Vuex.Store({
     },
 
     songs:{
-      digitalbath: {
+      a1a1: {
+        author: "Deftones",
         title: "Digital Bath",
         bpm: 90,
         beats: "4",
         size: "4",
         sFirstBeat: true
       },
-      change: {
-        title: "change",
+      a2a2: {
+        author: "Deftones",
+        title: "Change",
         bpm: 100,
         beats: "4",
         size: "4",
         sFirstBeat: true
-      },
+      }
     }
   },
   getters: {
@@ -42,7 +43,8 @@ export default new Vuex.Store({
     sizesRange:state=>state.sizesRange,
 
     menu: state=>state.menu,
-    themeDark: state=>state.themeDark
+    themeDark: state=>state.themeDark,
+
   },
   mutations: {
     CHANGE_THEME(state){

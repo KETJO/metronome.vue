@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style lang="sass">
-@import "@/assets/styles/sass/style"
+
 #app 
   width: 100%
   height: 100%

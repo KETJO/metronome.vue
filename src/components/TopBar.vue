@@ -12,7 +12,7 @@
 	transition(name="fade")
 		.menu-content(v-show="menu", @click="closeMenu") 
 			a sounds
-			a songs
+			router-link(to="Songs") songs
 			a vusual mode
 			a(v-if="themeDark", @click="CHANGE_THEME") light theme
 			a(v-else, @click="CHANGE_THEME") dark theme
@@ -58,10 +58,10 @@ export default {
 	z-index: 3
 .menu-content
 	position: absolute
-	top: 0%
-	left: 0%
-	width: 100%
-	height: 100%
+	top: -10%
+	left: -10%
+	width: 120%
+	height: 120%
 	background-color: var(--mainBg)
 	z-index: 2
 	display: flex
