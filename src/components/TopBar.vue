@@ -11,11 +11,10 @@
 		span menu
 	transition(name="fade")
 		.menu-content(v-show="menu", @click="closeMenu") 
-			a sounds
+			router-link(to="AddSong") add song
 			router-link(to="Songs") songs
-			a vusual mode
-			a(v-if="themeDark", @click="CHANGE_THEME") light theme
-			a(v-else, @click="CHANGE_THEME") dark theme
+			a(v-if="themeDark", @click.stop="CHANGE_THEME") light theme
+			a(v-else, @click.stop="CHANGE_THEME") dark theme
 			a send feedback
 			a about
 </template>

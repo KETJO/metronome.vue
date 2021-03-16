@@ -5,14 +5,10 @@ import Main from "../views/Main.vue"
 import BeatsMenu from '../views/BeatsMenu'
 import Songs from '../views/Songs'
 import AddSong from '../views/AddSong.vue'
+import EditSong from "../views/EditSong.vue"
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/addSong',
-    name: 'AddSong',
-    component: AddSong
-  },
   {
     path: '/',
     name: 'Main',
@@ -27,6 +23,16 @@ const routes = [
     path: '/songs',
     name: 'Songs',
     component: Songs
+  },
+  {
+    path: '/addSong',
+    name: 'AddSong',
+    component: AddSong
+  },
+  {
+    path: '/editSong/:title',
+    name: 'EditSong',
+    component: EditSong
   }
 ]
 

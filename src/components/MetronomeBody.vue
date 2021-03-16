@@ -1,10 +1,26 @@
 <template lang="pug">
 .metronome-body 
+	transition(name="fade")
+		.message(v-if="message") {{ message }}
+
 	.beats-side
 		.beats-side__content
-			.beat(v-for="beat in Number(curVals.beats)") 
-	.title.textGlow 
-		h2 {{ curVals.title }}
+			.beat(
+				v-for="(beat, i) in Number(curVals.beats)",
+				:class="{ sFbeat: i == 0 && curVals.sFirstBeat }"
+			) 
+
+	.saveUpdate
+		.saveUpdate__btn(
+			v-if="curVals.id === 0",
+			@click="$router.push({ name: 'AddSong' })"
+		)
+			span save
+		.saveUpdate__btn(v-else, @click="updateSong")
+			span update
+	.title.textGlow
+		h2(@click="$router.push({ name: 'Songs' })") {{ curVals.author }} {{ curVals.title }}
+
 	.bpm 
 		.down.arrow.blockSelect.pointer.neuro-outpressed(
 			@mousedown="changeBpm('down')"
@@ -14,16 +30,16 @@
 			.bpmModal__content 
 				.bpmModalInfo.textGlow 
 					span(ref="infoModal") 
-				input(type="number", v-model="bpm", @input="validate", ref="inpModal")
+				input(type="number", v-model="song.bpm", @input="validate", ref="inpModal")
 				button.modal-btn(
 					@click="bpmShowModal = !bpmShowModal",
-					:disabled="bpm < 20"
+					:disabled="song.bpm < 20"
 				) ok
 		.up.arrow.blockSelect.pointer.neuro-outpressed(@mousedown="changeBpm('up')") >
 
 	.knob(ref="knob")
 		round-slider(
-			v-model="bpm",
+			v-model="song.bpm",
 			:min="20",
 			:max="380",
 			line-cap="round",
@@ -35,30 +51,18 @@
 
 <script>
 import { mapMutations } from "vuex";
-import mainHandler from "../mixins/mainHandler";
+import controls from "../mixins/controls";
 export default {
-	mixins: [mainHandler],
+	mixins: [controls],
 	data: () => ({
-		bpm: 120,
+		song: {
+			bpm: 120
+		},
 		bpmShowModal: false,
-		bpmHistory: [120]
+		message: false
 	}),
 	methods: {
-		...mapMutations(["CHANGE_CURRENT_VALS"]),
-		validate() {
-			const str = String(this.bpm);
-			if (str.match(/^\d+$/) || str === "") {
-				if (this.bpm < 20) {
-					this.$refs.infoModal.textContent = "min value 20";
-				} else if (this.bpm > 380) {
-					this.$refs.infoModal.textContent = "max value 380";
-					this.bpm = this.bpmHistory[this.bpmHistory.length - 1];
-				} else {
-					this.$refs.infoModal.textContent = "";
-				}
-				this.bpmHistory.push(this.bpm);
-			} else this.bpm = this.bpmHistory[this.bpmHistory.length - 1];
-		},
+		...mapMutations(["CHANGE_CURRENT_VALS", "UPDATE_SONG"]),
 		theming() {
 			this.$refs.bpm.classList.add("textGlow");
 			this.$refs.bpm.style.color = "var(--akcentLight)";
@@ -70,6 +74,11 @@ export default {
 			this.$refs.bpm.style.color = "inherit";
 			this.$refs.knob.classList.remove("boxGlow");
 			this.$refs.knob.style.border = "none";
+		},
+		updateSong() {
+			const song = this.curVals;
+			this.UPDATE_SONG(song);
+			this.showMessage("song updated");
 		}
 	},
 	computed: {
@@ -78,7 +87,8 @@ export default {
 		}
 	},
 	mounted() {
-		this.bpm = this.curVals.bpm;
+		this.song.bpm = this.curVals.bpm;
+		this.bpmHistory = [120];
 	},
 	watch: {
 		bpmShowModal() {
@@ -87,6 +97,12 @@ export default {
 					this.$refs.inpModal.focus();
 				}, 0);
 			}
+		},
+		"song.bpm": function() {
+			const innerKnob = document.querySelector(".rs-handle");
+			innerKnob.style.transform = `rotate(-${this.song.bpm - 10}deg)`;
+			const newValues = { ...this.song };
+			this.CHANGE_CURRENT_VALS(newValues);
 		}
 	}
 };
@@ -98,13 +114,13 @@ export default {
 	height: 100%
 	display: flex
 	flex-direction: column
-	justify-content: space-between
+	justify-content: space-evenly
 	align-items: center
-	padding: 3rem 0rem
+	padding: 2rem 0rem
 	color: var(--mainGrey)
 .beats-side
 	width: 100%
-	height: 6rem
+	height: 4rem
 	display: flex
 	justify-content: space-evenly
 	flex-direction: column
@@ -118,12 +134,43 @@ export default {
 		width: 100%
 		height: 100%
 		margin: 0rem .2rem
-		border-radius: 8px
+		border-radius: 2px
+		position: relative
+		display: flex
+		align-items: baseline
+		justify-content: center
+		&__sfirstMark
+			font-size: 1rem
+			color: var(--akcentLight)
+			height: .3rem
+			border-radius: 10px
+	+MW414
+		height: 1rem
 .title
 	font-size: 1.5rem
 	color: var(--akcentLight)
 	text-transform: uppercase
 	font-weight: 600
+	text-align: center
+	h2
+		margin: .4rem 0rem
+	img
+		width: 2.5rem
+		height: 2.5rem
+		position: absolute
+		bottom: -10%
+		left: 110%
+.saveUpdate
+	display: flex
+	align-items: center
+	justify-content: center
+	font-size: 1rem
+	text-transform: uppercase
+	margin: 1rem 0rem
+	span
+		border: solid 2px var(--mainGrey)
+		padding: .5rem 2rem
+		color: var(--mainGrey)
 .bpm
 	display: flex
 	justify-content: center
@@ -137,7 +184,7 @@ export default {
 		padding: 1rem
 		width: 40px
 		height: 40px
-		border-radius: 50%
+		border-radius: 10px
 		display: flex
 		justify-content: center
 		align-items: center
@@ -158,8 +205,8 @@ export default {
 	transform: rotate(45deg)
 //INPUTMODAL//
 .bpmModal
-	width: 100%
-	height: 100%
+	width: 100vw
+	height: 100vh
 	position: absolute
 	background-color: rgba(0,0 ,0 ,0.8)
 	z-index: 3
@@ -180,7 +227,6 @@ export default {
 			font-size: 1.5rem
 			position: absolute
 			top: 20%
-			span
 		input
 			border: solid 1px var(--akcentLight)
 			padding: 2rem
@@ -197,4 +243,14 @@ export default {
 			margin-top: 6rem
 			&:disabled
 				opacity: .3
+.message
+	position: absolute
+	top: 5%
+	left: 50%
+	color: var(--akcentLight)
+	font-size: 1.5rem
+	text-transform: uppercase
+	border: solid 2px var(--akcentLight)
+	transform: translate(-50%, -50%)
+	padding: 1rem 2rem
 </style>

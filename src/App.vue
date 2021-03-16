@@ -1,27 +1,32 @@
 <template lang="pug">
 #app
-  Metronome
+	RotateScreen
+	Metronome
 </template>
 
 <script>
-import Metronome from './components/Metronome';
+import RotateScreen from "./views/RotateScreen";
+import Metronome from "./components/Metronome";
 
 export default {
-  name: 'App',
+	name: "App",
 
-  components: {
-    Metronome,
-  },
+	components: {
+		RotateScreen,
+		Metronome
+	},
 
-  data: () => ({
-    //
-  }),
+	data: () => ({
+		//
+	}),
+	mounted() {
+		
+	}
 };
 </script>
 
 <style lang="sass">
-
-#app 
+#app
   width: 100%
   height: 100%
   background-color: var(--mainBg)

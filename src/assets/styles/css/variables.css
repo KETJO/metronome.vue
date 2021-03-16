@@ -2,6 +2,7 @@ html {
 	--mainBg: #212529;
 	--akcentLight: #109EF1;
 	--akcentDark: #046BB0;
+	--yellowLight: rgb(253, 255, 122);
 	--mainGrey: #74797D;
 
 	--boxShadowDark: #111315;
@@ -13,6 +14,15 @@ html {
 	--knobOuter: 200px;
 	--knobInner: 170px;
 	color: var(--mainGrey);
+	width: 100%;
+	height: 100%;
+	background-color: var(--mainBg);
+}
+@media screen and (max-width: 320px) {
+	html {
+		--knobOuter: 150px; 
+		--knobInner: 130px;
+	}
 }
 html[data-theme="light"] {
 	--mainBg: #ECF0F3;
@@ -48,6 +58,13 @@ body *:after {
     -moz-user-select: none;
     -ms-user-select: none;
 }
+.remove-scroll-bar::-webkit-scrollbar {
+	width: 0px;
+}
+.remove-scroll-bar::-webkit-scrollbar-thumb {
+	background-color: transparent;
+	border-radius: 5em;
+}
 /**/
 .neuro-outpressed{
 	background: var(--bgOutpressed);
@@ -64,6 +81,7 @@ body *:after {
 .neuroInput {
 	background: var(--bg1);
 	box-shadow: inset 23px 23px 46px var(--boxShadowDark), inset -23px -23px 46px var(--boxShadowLight);
+	-webkit-appearance: none;
 }
 html[data-theme="light"] .neuroPressed label {
 	text-shadow: none
@@ -74,6 +92,24 @@ html[data-theme="light"] .neuroPressed label {
 .boxGlow{
 	box-shadow: 0px 0px 40px var(--akcentLight)!important;
 }
+/*beatGlow*/
+.sfbGlow{
+	background-color: var(--yellowLight)!important;
+	box-shadow: 0px 0px 40px var(--yellowLight)!important;
+}
+.beatGlow{
+	background-color: var(--akcentLight)!important;
+	box-shadow: 0px 0px 40px var(--akcentLight)!important;
+}
+html[data-theme="light"] .sfbGlow {
+	background-color: var(--yellowLight)!important;
+	box-shadow: none!important;
+}
+html[data-theme="light"] .beatGlow {
+	background-color: var(--akcentLight)!important;
+	box-shadow: none!important;
+}
+
 html[data-theme="light"] .textGlow {
 	text-shadow: none;
 }
@@ -99,7 +135,7 @@ html[data-theme="light"] .textGlow {
 	text-transform: uppercase;
 	padding: 2rem 0rem;
 }
-/* .modal-btn {
+.modal-btn {
 	background-color: transparent;
 	color: var(--akcentLight);
 	font-size: 2rem;
@@ -108,7 +144,7 @@ html[data-theme="light"] .textGlow {
 	height: 50px;
 	border: solid 2px var(--akcentLight);
 	border-radius: 10px;
-} */
+}
 /*knob*/
 path{
 	stroke: transparent!important
@@ -122,14 +158,12 @@ path{
 	height: var(--knobInner)!important;
 }
 .rs-handle {
-	width: 40px!important;
-	height: 40px!important;
+	width: 35px!important;
+	height: 35px!important;
 	background: var(--mainDark)!important;
 	box-shadow: inset 0px 15px 20px var(--boxShadowDark), inset 0px -15px 30px var(--boxShadowLight)!important;
 	transform: rotate(-120deg);
-}
-.rs-handle.rs-focus{
-	
+	margin: -10px 7px 0px!important;
 }
 .rs-handle.rs-move {
 	cursor: default!important;

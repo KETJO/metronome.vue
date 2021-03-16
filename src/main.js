@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import RoundSlider from 'vue-round-slider'
 
+
 Vue.use(RoundSlider)
 Vue.config.productionTip = false
 
