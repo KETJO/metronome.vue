@@ -1,10 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Auth from './auth'
+import FbStorageHandler from './fbStorageHandler'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  modules: {
+    Auth,
+    FbStorageHandler
+  },
   state: {
+    user:'',
+    error: null,
+
+    volume: 80,
     sizesRange: [2, 4, 8, 16],
     allSounds: ["rim-shot", "hi-hat", "cowbell"],
     settedSound: 'rim-shot',
@@ -12,6 +22,7 @@ export default new Vuex.Store({
     idCounter: 2,
 
     currentSong: {
+      author: "Unknown",
       id: 0,
       title:"new song",
       bpm: 120,
@@ -50,6 +61,9 @@ export default new Vuex.Store({
       }
   },
   getters: {
+    error: state=>state.error,
+    user: state=>state.user,
+    volume: state=>state.volume,
     currentSong: state=>state.currentSong,
     freeModeSong: state=>state.freeModeSong,
     songs: state=>state.songs,
@@ -61,11 +75,20 @@ export default new Vuex.Store({
     themeDark: state=>state.themeDark
   },
   mutations: {
+    SET_USER_NAME(state,user){
+      state.user=user
+    },
+    SET_ERROR(state, error){
+      state.error = error
+    },
     CHANGE_THEME(state){
       state.themeDark = !state.themeDark;
       const html = document.documentElement;
       if(!html.dataset.theme) html.setAttribute('data-theme', 'light')
       else html.removeAttribute('data-theme')
+    },
+    CHANGE_VOL(state, vol){
+      state.volume=vol
     },
     CHANGE_CURRENT_VALS(state, newVals){
       state.currentSong=({...state.currentSong, ...newVals})
@@ -100,7 +123,4 @@ export default new Vuex.Store({
   actions: {
 
   },
-  modules: {
-
-  }
 })

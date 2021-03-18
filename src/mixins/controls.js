@@ -31,6 +31,9 @@ const mainHandler = {
 				elem.classList.remove("neuroPressed");
 			}, 20);
 		},
+		changeVol(){
+			this.CHANGE_VOL(this.vol);
+		},
 		changeBpm(direction) {
 			this.clickOut(`.${direction}`);
 			if (direction === "up" && this.song.bpm < 380) this.song.bpm++;

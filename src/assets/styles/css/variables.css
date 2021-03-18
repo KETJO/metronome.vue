@@ -4,6 +4,7 @@ html {
 	--akcentDark: #046BB0;
 	--yellowLight: rgb(253, 255, 122);
 	--mainGrey: #74797D;
+	--red1: rgb(218, 77, 77);
 
 	--boxShadowDark: #111315;
 	--boxShadowLight: #31373d;
@@ -13,6 +14,9 @@ html {
 	
 	--knobOuter: 200px;
 	--knobInner: 170px;
+
+	--volSliderW: 250px;
+
 	color: var(--mainGrey);
 	width: 100%;
 	height: 100%;

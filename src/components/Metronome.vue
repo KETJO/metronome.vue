@@ -5,7 +5,10 @@
 </template>
 <script>
 export default {
-	components: {}
+	components: {},
+	beforeCreate() {
+		
+	},
 };
 </script>
 

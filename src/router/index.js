@@ -1,18 +1,30 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Main from "../views/Main.vue"
+import Auth from "../views/Auth"
+import Reg from "../views/Reg"
+import Main from "../views/Main"
 import BeatsMenu from '../views/BeatsMenu'
 import Songs from '../views/Songs'
-import AddSong from '../views/AddSong.vue'
-import EditSong from "../views/EditSong.vue"
+import AddSong from '../views/AddSong'
+import EditSong from "../views/EditSong"
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
+    name: 'Auth',
+    component: Auth
+  },
+  {
+    path: '/reg',
+    name: 'Reg',
+    component: Reg
+  },
+  {
+    path: '/main',
     name: 'Main',
-    component: Main
+    component: Main,
   },
   {
     path: '/beatsMenu',

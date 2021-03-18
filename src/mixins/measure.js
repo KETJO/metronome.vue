@@ -4,17 +4,40 @@ const metronomeHandler = {
 
 		expected: 0,
 		timeInterval: 0,
+		sizeCoeficient: 1,
 		timeOut: {},
 		drift: 0,
 	}),
+	computed: {
+		
+	},
 	methods: {
 		playStop(){
 			this.isPlay=!this.isPlay;
 			if(this.isPlay) this.timerStart();
 			else this.timerStop();
 		},
+		updateSizeCoeficent(){
+			const size = Number(this.curVals.size);
+			switch(size) {
+				case(2): 
+					this.sizeCoeficient=0.5
+					break
+				case(4): 
+					this.sizeCoeficient=1
+					break
+				case(8): 
+					this.sizeCoeficient=2
+					break
+				case(16): 
+					this.sizeCoeficient=4
+					break
+			}
+		},
 		timerStart(){
-			this.timeInterval = 60/this.curVals.bpm*1000; 
+			this.updateSizeCoeficent();
+			console.log(this.sizeCoeficient);
+			this.timeInterval = 60/this.curVals.bpm*1000/this.sizeCoeficient; 
 			this.expected = Date.now() + this.timeInterval;
 			this.timeOut = setTimeout(this.round, this.timeInterval)
 		},
@@ -24,7 +47,8 @@ const metronomeHandler = {
 			this.beatCounter=0;
 		},
 		round(){
-			this.timeInterval = 60/this.curVals.bpm*1000; 
+			this.updateSizeCoeficent();
+			this.timeInterval = 60/this.curVals.bpm*1000/this.sizeCoeficient;
 			this.totalStart();
 			this.drift = Date.now()-this.expected;
 			this.expected+=this.timeInterval;

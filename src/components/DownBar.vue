@@ -31,12 +31,12 @@ export default {
 		}
 	}),
 	computed: {
-		...mapGetters(["currentSong", "settedSound", "allSounds"]),
+		...mapGetters(["currentSong", "settedSound", "allSounds", "volume"]),
 		curVals() {
 			return this.currentSong;
 		},
 		instrumentName() {
-			return this.allSounds[this.soundChangeIndex];
+			return this.settedSound;
 		}
 	},
 	methods: {
@@ -50,10 +50,12 @@ export default {
 		},
 		updateSound() {
 			this.sound.high = new Howl({
-				src: [`../media/sounds/${this.settedSound}/1.mp3`]
+				src: [`../media/sounds/${this.settedSound}/1.mp3`],
+				volume: this.volume / 100
 			});
 			this.sound.low = new Howl({
-				src: [`../media/sounds/${this.settedSound}/0.mp3`]
+				src: [`../media/sounds/${this.settedSound}/0.mp3`],
+				volume: this.volume / 100
 			});
 		}
 	},
@@ -64,6 +66,9 @@ export default {
 	},
 	mounted() {
 		this.updateSound();
+		this.$store.subscribe(mutation => {
+			if (mutation.type == "CHANGE_VOL") this.updateSound();
+		});
 	},
 	created() {}
 };

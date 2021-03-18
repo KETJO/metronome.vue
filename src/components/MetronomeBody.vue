@@ -9,18 +9,29 @@
 				v-for="(beat, i) in Number(curVals.beats)",
 				:class="{ sFbeat: i == 0 && curVals.sFirstBeat }"
 			) 
+	.info
+		.saveUpdate
+			.saveUpdate__btn(
+				v-if="curVals.id === 0",
+				@click="$router.push({ name: 'AddSong' })"
+			)
+				span save as song
+			.saveUpdate__btn(v-else, @click="updateSong")
+				span update song
 
-	.saveUpdate
-		.saveUpdate__btn(
-			v-if="curVals.id === 0",
-			@click="$router.push({ name: 'AddSong' })"
-		)
-			span save
-		.saveUpdate__btn(v-else, @click="updateSong")
-			span update
-	.title.textGlow
-		h2(@click="$router.push({ name: 'Songs' })") {{ curVals.author }} {{ curVals.title }}
-
+		.title.textGlow
+			h2(@click="$router.push({ name: 'Songs' })") {{ curVals.author }} - {{ curVals.title }}
+	.volume 
+		.volume__container 
+			img(src="../assets/img/volume.png")
+			input(
+				type="range",
+				v-model="vol",
+				min="0",
+				max="100",
+				step="1",
+				@input="changeVol"
+			)
 	.bpm 
 		.down.arrow.blockSelect.pointer.neuro-outpressed(
 			@mousedown="changeBpm('down')"
@@ -36,7 +47,6 @@
 					:disabled="song.bpm < 20"
 				) ok
 		.up.arrow.blockSelect.pointer.neuro-outpressed(@mousedown="changeBpm('up')") >
-
 	.knob(ref="knob")
 		round-slider(
 			v-model="song.bpm",
@@ -50,19 +60,21 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 import controls from "../mixins/controls";
+
 export default {
 	mixins: [controls],
 	data: () => ({
 		song: {
 			bpm: 120
 		},
+		vol: 80,
 		bpmShowModal: false,
 		message: false
 	}),
 	methods: {
-		...mapMutations(["CHANGE_CURRENT_VALS", "UPDATE_SONG"]),
+		...mapMutations(["CHANGE_CURRENT_VALS", "UPDATE_SONG", "CHANGE_VOL"]),
 		theming() {
 			this.$refs.bpm.classList.add("textGlow");
 			this.$refs.bpm.style.color = "var(--akcentLight)";
@@ -84,11 +96,14 @@ export default {
 	computed: {
 		curVals() {
 			return this.$store.state.currentSong;
-		}
+		},
+		...mapGetters(["volume"])
 	},
 	mounted() {
 		this.song.bpm = this.curVals.bpm;
 		this.bpmHistory = [120];
+		this.vol = this.volume;
+		this.showMessage(this.$route.params.message);
 	},
 	watch: {
 		bpmShowModal() {
@@ -112,17 +127,40 @@ export default {
 .metronome-body
 	width: 100%
 	height: 100%
-	display: flex
-	flex-direction: column
-	justify-content: space-evenly
+	display: grid
+	grid-template-columns: 1fr
+	justify-items: center
 	align-items: center
 	padding: 2rem 0rem
 	color: var(--mainGrey)
+	position: relative
+.volume
+	width: 100%
+	&__container
+		display: flex
+		justify-content: space-between
+		align-items: center
+	img
+		width: 3rem
+		height: 3rem
+	input
+		width: 90%
+		height: 7px
+		-webkit-appearance: none
+		background-color: var(--mainGrey)
+		border-radius: 0%
+	input[type=range]::-webkit-slider-thumb
+		-webkit-appearance: none
+		height: 15px
+		width: 35px
+		background-color: var(--akcentLight)
+		border: solid 1px var(--akcentLight)
+		box-shadow: 0px 0px 40px var(--akcentLight)
 .beats-side
 	width: 100%
-	height: 4rem
+	height: 100%
 	display: flex
-	justify-content: space-evenly
+	justify-content: space-between
 	flex-direction: column
 	&__content
 		display: flex
@@ -144,8 +182,6 @@ export default {
 			color: var(--akcentLight)
 			height: .3rem
 			border-radius: 10px
-	+MW414
-		height: 1rem
 .title
 	font-size: 1.5rem
 	color: var(--akcentLight)
@@ -160,6 +196,12 @@ export default {
 		position: absolute
 		bottom: -10%
 		left: 110%
+.info
+	width: 100%
+	display: flex
+	align-items: center
+	justify-content: space-between
+	align-self: flex-end
 .saveUpdate
 	display: flex
 	align-items: center
@@ -184,7 +226,7 @@ export default {
 		padding: 1rem
 		width: 40px
 		height: 40px
-		border-radius: 10px
+		border-radius: 5px
 		display: flex
 		justify-content: center
 		align-items: center
@@ -203,6 +245,7 @@ export default {
 	box-shadow: 0 5px 15px 2px var(--mainBg), 0 0 0 12px var(--mainGrey)
 	z-index: 1
 	transform: rotate(45deg)
+	align-self: center
 //INPUTMODAL//
 .bpmModal
 	width: 100vw
