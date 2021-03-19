@@ -25,6 +25,18 @@ export default {
 		},
 		async totalSaveChanges() {
 			await this.$store.dispatch("totalSaveToFb");
+		},
+		async swRegister() {
+			if (navigator.serviceWorker) {
+				try {
+					const reg = await navigator.serviceWorker.register(
+						"../sw.js"
+					);
+					console.log("Service worker register success", reg);
+				} catch (e) {
+					console.log("Service worker register fail");
+				}
+			}
 		}
 	},
 	beforeCreate() {},
@@ -35,6 +47,7 @@ export default {
 				if (mT === mutation.type) this.saveSongsChanges();
 			});
 		});
+		this.swRegister();
 	},
 	beforeDestroy() {
 		this.totalSaveChanges();
