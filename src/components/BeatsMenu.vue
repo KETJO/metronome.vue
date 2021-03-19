@@ -36,15 +36,15 @@ export default {
 	data: () => ({
 		beats: "",
 		size: "",
-		sFirstBeat: null,
+		sFirstBeat: null
 	}),
 	methods: {
 		...mapMutations(["CHANGE_CURRENT_VALS"]),
 		changeCurrentValues() {
 			const newValues = { ...this._data };
 			this.CHANGE_CURRENT_VALS(newValues);
-			this.$router.go(-1);
-		},
+			this.$emit("closeBeatsMenu");
+		}
 	},
 	computed: {
 		...mapGetters(["sizesRange"])
@@ -55,7 +55,7 @@ export default {
 		this.sFirstBeat = this.$store.state.currentSong.sFirstBeat;
 
 		setTimeout(() => {
-			this.markAsPressed(this.size, '.beats-menu__size-item');
+			this.markAsPressed(this.size, ".beats-menu__size-item");
 		}, 0);
 	}
 };
@@ -72,6 +72,7 @@ export default {
 	justify-content: center
 	flex-direction: column
 	align-items: center
+	padding: 4rem
 	&__output
 		font-size: 4rem
 		color: var(--akcentLight)

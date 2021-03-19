@@ -1,11 +1,11 @@
 <template lang="pug">
 .top-bar 
 	.beats-set.main-btn.neuro-outpressed.pointer.blockSelect(
-		@click="beatsMenu = !beatsMenu",
-		:class="{ activeBeatsMenu: beatsMenu }"
+		@click.capture="beatsMenu = true"
 	)
 		span {{ curVals.beats }} / {{ curVals.size }}
-
+		.beats-set__content(v-if="beatsMenu") 
+			BeatsMenu(@closeBeatsMenu="beatsMenu = false")
 
 	.menu.main-btn.neuro-outpressed.pointer.blockSelect(
 		@click="menu = !menu",
@@ -28,8 +28,11 @@
 
 <script>
 import { mapMutations } from "vuex";
-
+import BeatsMenu from "../components/BeatsMenu";
 export default {
+	components: {
+		BeatsMenu
+	},
 	data: () => ({
 		menu: false,
 		beatsMenu: false
@@ -56,8 +59,7 @@ export default {
 		curVals() {
 			return this.$store.state.currentSong;
 		}
-	},
-	mounted() {}
+	}
 };
 </script>
 
@@ -69,6 +71,13 @@ export default {
 	.beats-set
 		font-size: 1.5rem
 		font-weight: 800
+		&__content
+			position: absolute
+			width: 100%
+			height: 100%
+			top: 0%
+			left: 0%
+			z-index: 4
 .menu
 	z-index: 3
 .menu-content

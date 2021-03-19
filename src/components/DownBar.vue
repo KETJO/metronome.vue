@@ -70,7 +70,9 @@ export default {
 			if (mutation.type == "CHANGE_VOL") this.updateSound();
 		});
 	},
-	created() {}
+	beforeDestroy() {
+		this.timerStop();
+	}
 };
 </script>
 <style lang="sass" scoped>

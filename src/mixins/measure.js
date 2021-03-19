@@ -36,7 +36,6 @@ const metronomeHandler = {
 		},
 		timerStart(){
 			this.updateSizeCoeficent();
-			console.log(this.sizeCoeficient);
 			this.timeInterval = 60/this.curVals.bpm*1000/this.sizeCoeficient; 
 			this.expected = Date.now() + this.timeInterval;
 			this.timeOut = setTimeout(this.round, this.timeInterval)

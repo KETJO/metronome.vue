@@ -1,6 +1,6 @@
 <template lang="pug">
 .songs
-	router-link(to="/") 
+	router-link(to="/main") 
 		.back-arrow.textGlow &#8592;
 	.page__content
 		.songs__items
@@ -27,7 +27,7 @@ export default {
 		...mapMutations(["LOAD_SONG"]),
 		loadSong(song) {
 			this.LOAD_SONG(song);
-			this.$router.go(-1);
+			this.$router.push("/main");
 		}
 	}
 };

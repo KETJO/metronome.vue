@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import Auth from "../views/Auth"
 import Reg from "../views/Reg"
 import Main from "../views/Main"
-import BeatsMenu from '../views/BeatsMenu'
+//import BeatsMenu from '../views/BeatsMenu'
 import Songs from '../views/Songs'
 import AddSong from '../views/AddSong'
 import EditSong from "../views/EditSong"
@@ -26,11 +26,11 @@ const routes = [
     name: 'Main',
     component: Main,
   },
-  {
-    path: '/beatsMenu',
-    name: 'BeatsMenu',
-    component: BeatsMenu
-  },
+  // {
+  //   path: '/beatsMenu',
+  //   name: 'BeatsMenu',
+  //   component: BeatsMenu
+  // },
   {
     path: '/songs',
     name: 'Songs',
