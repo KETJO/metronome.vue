@@ -10,6 +10,9 @@ import Metronome from "./components/Metronome";
 
 export default {
 	name: "App",
+	metaInfo: {
+		title: 'Metronome'
+	},
 	components: {
 		RotateScreen,
 		Metronome
@@ -19,21 +22,20 @@ export default {
 		//
 	}),
 	methods: {
-		async saveSongsChanges() {
-			await this.$store.dispatch("saveSongsToFb");
-		},
+
 		async totalSaveChanges() {
 			await this.$store.dispatch("totalSaveToFb");
 		}
 	},
 	beforeCreate() {},
 	mounted() {
-		const mutationsTypes = ["ADD_SONG", "UPDATE_SONG", "DELETE_SONG"];
+		const mutationsTypes = ["ADD_SONG", "UPDATE_SONG", "DELETE_SONG", "LOAD_SONG", "CHANGE_THEME"];
 		this.$store.subscribe(mutation => {
 			mutationsTypes.forEach(mT => {
-				if (mT === mutation.type) this.saveSongsChanges();
+				if (mT === mutation.type) this.totalSaveChanges();
 			});
 		});
+		
 	},
 	beforeDestroy() {
 		this.totalSaveChanges();

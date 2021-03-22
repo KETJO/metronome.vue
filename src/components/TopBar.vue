@@ -14,16 +14,17 @@
 		span menu
 	transition(name="fade")
 		.menu-content(v-show="menu", @click="closeMenu") 
-			router-link(to="AddSong") add song
-			router-link(to="Songs") songs
+			.userName {{ login }}
+			router-link(v-show="login.length > 0", to="AddSong") add song
+			router-link(v-show="login.length > 0", to="Songs") songs
 			a(v-if="themeDark", @click.stop="CHANGE_THEME") light theme
 			a(v-else, @click.stop="CHANGE_THEME") dark theme
-			a send feedback
-			a about
-			.login 
-				.login__name {{ login }}
-				a(@click="logout") 
-					img(src="../assets/img/logout.png")
+			a(href="https://www.facebook.com/erlan.zharkeev/") send feedback
+			router-link(to="About") about
+			.logOut(v-if="login.length > 0", @click="logout") 
+				span logout
+				img(src="../assets/img/logout.png")
+			router-link#authorize(v-else, to="/") authorize &crarr;
 </template>
 
 <script>
@@ -46,6 +47,7 @@ export default {
 		},
 		async logout() {
 			await this.$store.dispatch("logout");
+			console.log("object");
 			this.$router.push("/");
 		}
 	},
@@ -107,17 +109,24 @@ export default {
 			text-shadow: 0px 0px 25px var(--akcentLight)
 			transition: .4s
 			cursor: pointer
-	.login
-		margin-top: 3rem
+	.userName
+		margin-bottom: 4rem
 		color: var(--akcentLight)
+	.logOut
 		display: flex
 		align-items: center
-		&__name
-			letter-spacing: .3rem
+		color: var(--akcentLight)
+		margin-top: 4rem
+		span
 			font-size: 1.4rem
 			font-weight: 800
 		img
-			width: 3rem
-			height: 3rem
+			width: 2rem
+			height: 2rem
 			margin-left: 1rem
+	#authorize
+		color: var(--akcentLight)
+		margin-top: 4rem
+		font-size: 1.8rem
+		font-weight: 800
 </style>

@@ -8,10 +8,10 @@ export default {
 				const uid = await dispatch('getUid')
 
 				await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('SET_STATE', data.val())})
-
-				await firebase.database().ref(`/users/${uid}/info`).on('value', function(data){commit('SET_USER_NAME', data.val().name)})
+				console.log('downladed');
 			} catch(e){
 				commit('SET_ERROR', e)
+				console.log('UNLOaded');
 				throw e
 			}
 		},
@@ -20,9 +20,9 @@ export default {
 				await firebase.auth().createUserWithEmailAndPassword(email, password)
 				const uid = await dispatch('getUid')
 				
-				await firebase.database().ref(`/users/${uid}/info`).set({name})
+				await firebase.database().ref(`/users/${uid}/state`).set({user: name})
 
-				await firebase.database().ref(`/users/${uid}/info`).on('value', function(data){commit('SET_USER_NAME', data.val().name)})
+				commit('SET_USER_NAME', name)
 			} catch(e){
 				commit('SET_ERROR', e)
 				throw e
@@ -33,9 +33,13 @@ export default {
 			return user ? user.uid : null
 		},
 		async logout({dispatch}){
-			await dispatch('totalSaveToFb');
-			await firebase.auth().signOut()
-
+			try{
+				await dispatch('totalSaveToFb');
+				await firebase.auth().signOut()
+				console.log('loged out');
+			}catch(e){
+				
+			}
 		}
 	}
 }

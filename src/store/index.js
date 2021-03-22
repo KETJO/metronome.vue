@@ -11,6 +11,7 @@ export default new Vuex.Store({
     FbStorageHandler
   },
   state: {
+    version: '1.1',
     user:'',
     error: null,
 
@@ -34,24 +35,25 @@ export default new Vuex.Store({
     songs: 
       [{
         id: 1,
-        author: "Deftones",
-        title: "Digital Bath",
-        bpm: 90,
+        author: "Nirvana",
+        title: "Smels like teen spirit",
+        bpm: 116,
         beats: "4",
         size: "4",
         sFirstBeat: true
       },
       {
         id: 2,
-        author: "Deftones",
-        title: "Change",
-        bpm: 100,
+        author: "RadioHead",
+        title: "Creep",
+        bpm: 92,
         beats: "4",
         size: "4",
         sFirstBeat: true
       }],
 
     freeModeSong:{
+        author: "Unknown",
         id: 0,
         title:"new song",
         bpm: 120,
@@ -72,10 +74,12 @@ export default new Vuex.Store({
     idCount: state=>state.idCounter,
     sizesRange:state=>state.sizesRange,
     menu: state=>state.menu,
-    themeDark: state=>state.themeDark
+    themeDark: state=>state.themeDark,
+    version: state=>state.version
   },
   mutations: {
     SET_USER_NAME(state,user){
+      console.log('object');
       state.user=user
     },
     SET_ERROR(state, error){

@@ -5,11 +5,12 @@ import store from './store'
 import RoundSlider from 'vue-round-slider'
 import firebase from 'firebase/app'
 import Vuelidate from 'vuelidate'
+import VueMeta from 'vue-meta'
 import 'firebase/auth'
 import 'firebase/database'
 import './registerServiceWorker'
 
-
+Vue.use(VueMeta)
 Vue.use(RoundSlider)
 Vue.use(Vuelidate)
 Vue.config.productionTip = false

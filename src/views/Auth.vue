@@ -27,7 +27,7 @@
 			) log in
 			#registration(@click="$router.push('/reg')") sign-up now
 	#noAuthorize 
-		button.modal-btn use without song list &rArr;
+		button.modal-btn(@click="$router.push({ path: '/main' })") use without song list &rArr;
 </template>
 
 <script>
@@ -58,12 +58,18 @@ export default {
 					params: { message: "loged in" }
 				});
 			} catch (e) {}
+		},
+		async logOut() {
+			await this.$store.dispatch("logout");
 		}
 	},
 	computed: {
 		error() {
 			return this.$store.state.error;
 		}
+	},
+	mounted() {
+		this.$store.dispatch("logout");
 	},
 	validations: {
 		form: {
