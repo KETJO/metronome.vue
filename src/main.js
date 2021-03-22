@@ -7,6 +7,7 @@ import firebase from 'firebase/app'
 import Vuelidate from 'vuelidate'
 import 'firebase/auth'
 import 'firebase/database'
+import './registerServiceWorker'
 
 
 Vue.use(RoundSlider)

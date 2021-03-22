@@ -26,6 +26,8 @@
 				:disabled="form.email.length < 1 || form.password.length < 1"
 			) log in
 			#registration(@click="$router.push('/reg')") sign-up now
+	#noAuthorize 
+		button.modal-btn use without song list &rArr;
 </template>
 
 <script>
@@ -78,4 +80,12 @@ export default {
 };
 </script>
 <style lang="sass" scoped>
+#noAuthorize
+	margin-top: 4rem
+	width: 100%
+	color: var(--greenCustom)
+	button
+		width: 100%
+		text-transform: uppercase
+		font-size: 1.2rem
 </style>

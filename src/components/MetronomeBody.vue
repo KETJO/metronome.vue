@@ -288,7 +288,7 @@ export default {
 				opacity: .3
 .message
 	position: absolute
-	top: 5%
+	top: -15px
 	left: 50%
 	color: var(--akcentLight)
 	font-size: 1.5rem

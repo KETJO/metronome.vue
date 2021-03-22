@@ -15,7 +15,7 @@
 		#email
 			label(for="formEmail") email
 			input#formEmail.neuroInput(
-				type="text",
+				type="email",
 				v-model.trim="form.email",
 				:class="{ invalid: ($v.form.email.$dirty && !$v.form.email.required) || ($v.form.email.$dirty && !$v.form.email.email) }"
 			)

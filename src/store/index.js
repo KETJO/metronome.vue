@@ -16,7 +16,7 @@ export default new Vuex.Store({
 
     volume: 80,
     sizesRange: [2, 4, 8, 16],
-    allSounds: ["rim-shot", "hi-hat", "cowbell"],
+    allSounds: ["rim-shot", "hi-hat", "rim-shot2", "hi-hat2"],
     settedSound: 'rim-shot',
     themeDark: true,
     idCounter: 2,
