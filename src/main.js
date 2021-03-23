@@ -8,7 +8,7 @@ import Vuelidate from 'vuelidate'
 import VueMeta from 'vue-meta'
 import 'firebase/auth'
 import 'firebase/database'
-import './registerServiceWorker'
+
 
 Vue.use(VueMeta)
 Vue.use(RoundSlider)
@@ -36,6 +36,17 @@ firebase.auth().onAuthStateChanged(()=>{
     }).$mount('#app')
   }
 })
+
+// window.addEventListener('load', async () =>{
+//   if('serviceWorker in navigator') { 
+//     try {
+//       const reg = await navigator.serviceWorker.register('../sw.js')
+//       console.log('registered', reg);
+//     } catch(e){
+//       console.log('unregistered');
+//     }
+//   }
+// })
 
 
 

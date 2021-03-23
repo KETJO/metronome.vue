@@ -11,7 +11,7 @@ import Metronome from "./components/Metronome";
 export default {
 	name: "App",
 	metaInfo: {
-		title: 'Metronome'
+		title: "Metronome"
 	},
 	components: {
 		RotateScreen,
@@ -22,20 +22,37 @@ export default {
 		//
 	}),
 	methods: {
-
 		async totalSaveChanges() {
 			await this.$store.dispatch("totalSaveToFb");
+		},
+		async registerWorker() {
+			if (navigator.serviceWorker) {
+				try {
+					const reg = await navigator.serviceWorker.register(
+						"../sw.js"
+					);
+					console.log("sw register success", reg);
+				} catch (e) {
+					console.log("sw register fail");
+				}
+			}
 		}
 	},
 	beforeCreate() {},
 	mounted() {
-		const mutationsTypes = ["ADD_SONG", "UPDATE_SONG", "DELETE_SONG", "LOAD_SONG", "CHANGE_THEME"];
+		const mutationsTypes = [
+			"ADD_SONG",
+			"UPDATE_SONG",
+			"DELETE_SONG",
+			"LOAD_SONG",
+			"CHANGE_THEME"
+		];
 		this.$store.subscribe(mutation => {
 			mutationsTypes.forEach(mT => {
 				if (mT === mutation.type) this.totalSaveChanges();
 			});
 		});
-		
+		this.registerWorker();
 	},
 	beforeDestroy() {
 		this.totalSaveChanges();
