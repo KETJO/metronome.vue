@@ -1,16 +1,19 @@
+/* eslint-disable */
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Auth from './auth'
-import FbStorageHandler from './fbStorageHandler'
+//import Auth from './auth'
+//import FbStorageHandler from './fbStorageHandler'
 
+import firebase from 'firebase/app'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: {
-    Auth,
-    FbStorageHandler
-  },
+  // modules: {
+  //   Auth,
+  //   FbStorageHandler
+  // },
   state: {
+    stateNewVals: {},
     version: '1.1',
     user:'',
     error: null,
@@ -75,9 +78,13 @@ export default new Vuex.Store({
     sizesRange:state=>state.sizesRange,
     menu: state=>state.menu,
     themeDark: state=>state.themeDark,
-    version: state=>state.version
+    version: state=>state.version,
   },
   mutations: {
+    PREWRITE_NEW_STATE(state, data){
+      console.log(state,data.state);
+			state = {...data.state}
+		},
     SET_USER_NAME(state,user){
       console.log('object');
       state.user=user
@@ -125,6 +132,48 @@ export default new Vuex.Store({
     
   },
   actions: {
+    async login({dispatch, commit}, {email, password}){
+			try{
+				await firebase.auth().signInWithEmailAndPassword(email, password)
+				const uid = await dispatch('getUid')
 
+				await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('PREWRITE_NEW_STATE', data.val())})
+				console.log('downladed');
+			} catch(e){
+				commit('SET_ERROR', e)
+				console.log('UNLOaded');
+				throw e
+			}
+		},
+		async reg({dispatch, commit},{name, email, password}){
+			try{
+				await firebase.auth().createUserWithEmailAndPassword(email, password)
+				const uid = await dispatch('getUid')
+				
+				await firebase.database().ref(`/users/${uid}/state`).set({user: name})
+
+				commit('SET_USER_NAME', name)
+			} catch(e){
+				commit('SET_ERROR', e)
+				throw e
+			}
+		},
+		getUid(){
+			const user = firebase.auth().currentUser
+			return user ? user.uid : null
+		},
+		async logout({dispatch}){
+			try{
+				await dispatch('totalSaveToFb');
+				await firebase.auth().signOut()
+				console.log('loged out');
+			}catch(e){
+				
+			}
+		},
+    async totalSaveToFb({dispatch, rootState}){
+			const uid = await dispatch('getUid')
+			await firebase.database().ref(`/users/${uid}/`).set({state:rootState})
+		}
   },
 })
