@@ -76,7 +76,9 @@ export default {
 					name: "Main",
 					params: { message: "account registred" }
 				});
-			} catch (e) {}
+			} catch (e) {
+				alert("Something went wrong, please try again");
+			}
 		}
 	},
 	computed: {

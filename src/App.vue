@@ -22,10 +22,11 @@ export default {
 			if (navigator.serviceWorker) {
 				try {
 					const reg = await navigator.serviceWorker.register(
-						"../sw.js"
+						"/metronome/sw.js"
 					);
 					console.log("sw register success", reg);
 				} catch (e) {
+					console.log(e);
 					console.log("sw register fail");
 				}
 			}
@@ -45,7 +46,7 @@ export default {
 				if (mT === mutation.type) this.totalSaveChanges();
 			});
 		});
-		//this.registerWorker();
+		this.registerWorker();
 	},
 	beforeDestroy() {
 		this.totalSaveChanges();

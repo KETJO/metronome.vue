@@ -34,6 +34,8 @@
 /* eslint-disable */
 import { required, email, minLength } from "vuelidate/lib/validators";
 import { mapGetters } from "vuex";
+
+
 export default {
 	mixin: [],
 	data: () => ({
@@ -58,7 +60,9 @@ export default {
 					name: "Main",
 					params: { message: "loged in" }
 				});
-			} catch (e) {}
+			} catch (e) {
+				alert("Something went wrong, please try again");
+			}
 		},
 		async logOut() {
 			await this.$store.dispatch("logout");

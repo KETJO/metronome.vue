@@ -24,16 +24,22 @@ firebase.initializeApp({
   appId: "1:976550974028:web:d0e1b106a563b7ee6e9ae9",
   measurementId: "G-4ML26JDBG7"
 })
-let app;
-firebase.auth().onAuthStateChanged(()=>{
-  if(!app){
-    app=new Vue({
-      router,
-      store,
-      render: h => h(App)
-    }).$mount('#app')
-  }
-})
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+  }).$mount('#app')
+  
+// let app;
+// firebase.auth().onAuthStateChanged(()=>{
+//   if(!app){
+//     app=new Vue({
+//       router,
+//       store,
+//       render: h => h(App)
+//     }).$mount('#app')
+//   }
+// })
 
 
 

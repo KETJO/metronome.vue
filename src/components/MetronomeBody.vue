@@ -9,7 +9,7 @@
 				v-for="(beat, i) in Number(currentSong.beats)",
 				:class="{ sFbeat: i == 0 && currentSong.sFirstBeat }"
 			) 
-	.info
+	.info(v-show="user.length>0")
 		.saveUpdate
 			.saveUpdate__btn(
 				v-if="currentSong.id === 0",
@@ -21,6 +21,7 @@
 
 		.title.textGlow
 			h2(@click="$router.push({ name: 'Songs' })") {{ currentSong.author }} - {{ currentSong.title }}
+			
 	.volume 
 		.volume__container 
 			img(src="../assets/img/volume.png")
@@ -62,6 +63,7 @@
 <script>
 import { mapMutations, mapGetters } from "vuex";
 import controls from "../mixins/controls";
+// import firebase from "firebase/app";
 
 export default {
 	mixins: [controls],
@@ -94,13 +96,24 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(["volume", "currentSong"])
+		...mapGetters(["volume", "currentSong", "user"])
 	},
 	mounted() {
 		this.song.bpm = this.currentSong.bpm;
 		this.bpmHistory = [120];
 		this.vol = this.volume;
 		this.showMessage(this.$route.params.message);
+
+		// firebase.auth().onAuthStateChanged(function(user) {
+		// 	if (user) {
+		// 		// User is signed in.
+		// 		console.log('signIn');
+		// 		console.log(user);
+		// 	} else {
+		// 		// No user is signed in.
+		// 		console.log('signOut');
+		// 	}
+		// });
 	},
 	watch: {
 		bpmShowModal() {
