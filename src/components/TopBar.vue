@@ -3,7 +3,7 @@
 	.beats-set.main-btn.neuro-outpressed.pointer.blockSelect(
 		@click.capture="beatsMenu = true"
 	)
-		span {{ curVals.beats }} / {{ curVals.size }}
+		span {{ currentSong.beats }} / {{ currentSong.size }}
 		.beats-set__content(v-if="beatsMenu") 
 			BeatsMenu(@closeBeatsMenu="beatsMenu = false")
 
@@ -14,22 +14,23 @@
 		span menu
 	transition(name="fade")
 		.menu-content(v-show="menu", @click="closeMenu") 
-			.userName {{ login }}
-			router-link(v-show="login.length > 0", to="AddSong") add song
-			router-link(v-show="login.length > 0", to="Songs") songs
-			a(v-if="themeDark", @click.stop="CHANGE_THEME") light theme
-			a(v-else, @click.stop="CHANGE_THEME") dark theme
+			.userName {{ user }}
+			router-link(v-show="user.length > 0", to="AddSong") add song
+			router-link(v-show="user.length > 0", to="Songs") songs
+			a(v-if="themeDark", @click.stop="changeTheme") light theme
+			a(v-else, @click.stop="changeTheme") dark theme
 			a(href="https://www.facebook.com/erlan.zharkeev/") send feedback
 			router-link(to="About") about
-			.logOut(v-if="login.length > 0", @click="logout") 
+			.logOut.pointer(v-if="user.length > 0", @click="logout") 
 				span logout
 				img(src="../assets/img/logout.png")
 			router-link#authorize(v-else, to="/") authorize &crarr;
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import BeatsMenu from "../components/BeatsMenu";
+
 export default {
 	components: {
 		BeatsMenu
@@ -39,7 +40,12 @@ export default {
 		beatsMenu: false
 	}),
 	methods: {
+		...mapActions(["updateTheme"]),
 		...mapMutations(["CHANGE_THEME"]),
+		changeTheme() {
+			this.CHANGE_THEME();
+			this.updateTheme();
+		},
 		closeMenu() {
 			setTimeout(() => {
 				this.menu = false;
@@ -47,20 +53,11 @@ export default {
 		},
 		async logout() {
 			await this.$store.dispatch("logout");
-			console.log("object");
 			this.$router.push("/");
 		}
 	},
 	computed: {
-		login() {
-			return this.$store.state.user;
-		},
-		themeDark() {
-			return this.$store.state.themeDark;
-		},
-		curVals() {
-			return this.$store.state.currentSong;
-		}
+		...mapGetters(["user", "themeDark", "currentSong"])
 	}
 };
 </script>

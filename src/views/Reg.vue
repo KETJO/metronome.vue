@@ -46,6 +46,8 @@
 <script>
 /* eslint-disable */
 import { required, email, minLength } from "vuelidate/lib/validators";
+import { mapGetters } from 'vuex';
+
 export default {
 	mixin: [],
 	data: () => ({
@@ -78,9 +80,7 @@ export default {
 		}
 	},
 	computed: {
-		error() {
-			return this.$store.state.error;
-		}
+		...mapGetters(['error'])
 	},
 	validations: {
 		form: {

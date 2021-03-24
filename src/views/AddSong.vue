@@ -47,6 +47,7 @@
 <script>
 import controls from "../mixins/controls";
 import { mapGetters, mapMutations } from "vuex";
+var uniqid = require("uniqid");
 export default {
 	mixins: [controls],
 	components: {},
@@ -65,19 +66,17 @@ export default {
 	methods: {
 		...mapMutations(["ADD_SONG", "INCREASE_ID", "LOAD_SONG"]),
 		addSong() {
-			this.INCREASE_ID();
-			this.song.id = this.idCount;
-			let result = { ...this.song };
-			this.ADD_SONG(result);
-			this.$router.go(-1);
+			this.song.id = uniqid();
+			this.ADD_SONG({ ...this.song });
+			this.$router.push("/main");
 		},
 		goBack() {
-			this.$router.push("/");
-			this.LOAD_SONG(this.freeModeSong);
+			this.$router.push("/main");
+			this.LOAD_SONG(this.defaultSong);
 		}
 	},
 	computed: {
-		...mapGetters(["sizesRange", "currentSong", "idCount", "freeModeSong"])
+		...mapGetters(["sizesRange", "currentSong", "defaultSong"])
 	},
 	mounted() {
 		setTimeout(() => {

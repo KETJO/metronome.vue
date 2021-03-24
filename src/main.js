@@ -5,16 +5,14 @@ import store from './store'
 import RoundSlider from 'vue-round-slider'
 import firebase from 'firebase/app'
 import Vuelidate from 'vuelidate'
-import VueMeta from 'vue-meta'
+
 import 'firebase/auth'
 import 'firebase/database'
 
-
-Vue.use(VueMeta)
 Vue.use(RoundSlider)
 Vue.use(Vuelidate)
-Vue.config.productionTip = false
 
+Vue.config.productionTip = false
 
 firebase.initializeApp({
   apiKey: "AIzaSyBwA5_urwfnrcQ_gxuzKqC0hF4jUB7Cfi0",
@@ -37,16 +35,6 @@ firebase.auth().onAuthStateChanged(()=>{
   }
 })
 
-// window.addEventListener('load', async () =>{
-//   if('serviceWorker in navigator') { 
-//     try {
-//       const reg = await navigator.serviceWorker.register('../sw.js')
-//       console.log('registered', reg);
-//     } catch(e){
-//       console.log('unregistered');
-//     }
-//   }
-// })
 
 
 

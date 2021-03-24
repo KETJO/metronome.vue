@@ -1,4 +1,4 @@
-const mainHandler = {
+const controls = {
 	data:()=>({
 		bpmHistory: [120],
 		taps: [],
@@ -74,12 +74,6 @@ const mainHandler = {
 			}, 2500);
 		}
 	},
-	watch: {
-
-	},
-	mounted() {
-
-	},
 }
 
-export default mainHandler
+export default controls

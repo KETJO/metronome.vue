@@ -10,17 +10,10 @@ import Metronome from "./components/Metronome";
 
 export default {
 	name: "App",
-	metaInfo: {
-		title: "Metronome"
-	},
 	components: {
 		RotateScreen,
 		Metronome
 	},
-
-	data: () => ({
-		//
-	}),
 	methods: {
 		async totalSaveChanges() {
 			await this.$store.dispatch("totalSaveToFb");
@@ -52,8 +45,6 @@ export default {
 				if (mT === mutation.type) this.totalSaveChanges();
 			});
 		});
-		
-
 		//this.registerWorker();
 	},
 	beforeDestroy() {

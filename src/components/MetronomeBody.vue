@@ -6,13 +6,13 @@
 	.beats-side
 		.beats-side__content
 			.beat(
-				v-for="(beat, i) in Number(curVals.beats)",
-				:class="{ sFbeat: i == 0 && curVals.sFirstBeat }"
+				v-for="(beat, i) in Number(currentSong.beats)",
+				:class="{ sFbeat: i == 0 && currentSong.sFirstBeat }"
 			) 
 	.info
 		.saveUpdate
 			.saveUpdate__btn(
-				v-if="curVals.id === 0",
+				v-if="currentSong.id === 0",
 				@click="$router.push({ name: 'AddSong' })"
 			)
 				span save as song
@@ -20,7 +20,7 @@
 				span update song
 
 		.title.textGlow
-			h2(@click="$router.push({ name: 'Songs' })") {{ curVals.author }} - {{ curVals.title }}
+			h2(@click="$router.push({ name: 'Songs' })") {{ currentSong.author }} - {{ currentSong.title }}
 	.volume 
 		.volume__container 
 			img(src="../assets/img/volume.png")
@@ -36,7 +36,7 @@
 		.down.arrow.blockSelect.pointer.neuro-outpressed(
 			@mousedown="changeBpm('down')"
 		) <
-		span.blockSelect(@click="bpmShowModal = !bpmShowModal", ref="bpm") {{ curVals.bpm }} bpm
+		span.blockSelect(@click="bpmShowModal = !bpmShowModal", ref="bpm") {{ currentSong.bpm }} bpm
 		.bpmModal(v-show="bpmShowModal") 
 			.bpmModal__content 
 				.bpmModalInfo.textGlow 
@@ -88,19 +88,16 @@ export default {
 			this.$refs.knob.style.border = "none";
 		},
 		updateSong() {
-			const song = this.curVals;
+			const song = this.currentSong;
 			this.UPDATE_SONG(song);
 			this.showMessage("song updated");
 		}
 	},
 	computed: {
-		curVals() {
-			return this.$store.state.currentSong;
-		},
-		...mapGetters(["volume"])
+		...mapGetters(["volume", "currentSong"])
 	},
 	mounted() {
-		this.song.bpm = this.curVals.bpm;
+		this.song.bpm = this.currentSong.bpm;
 		this.bpmHistory = [120];
 		this.vol = this.volume;
 		this.showMessage(this.$route.params.message);

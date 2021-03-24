@@ -25,7 +25,7 @@
 			button.modal-btn(
 				:disabled="form.email.length < 1 || form.password.length < 1"
 			) log in
-			#registration(@click="$router.push('/reg')") sign-up now
+			#registration.pointer(@click="$router.push('/reg')") sign-up now
 	#noAuthorize 
 		button.modal-btn(@click="$router.push({ path: '/main' })") use without song list &rArr;
 </template>
@@ -33,6 +33,7 @@
 <script>
 /* eslint-disable */
 import { required, email, minLength } from "vuelidate/lib/validators";
+import { mapGetters } from "vuex";
 export default {
 	mixin: [],
 	data: () => ({
@@ -64,9 +65,7 @@ export default {
 		}
 	},
 	computed: {
-		error() {
-			return this.$store.state.error;
-		}
+		...mapGetters(["error"])
 	},
 	mounted() {
 		//this.$store.dispatch("logout");

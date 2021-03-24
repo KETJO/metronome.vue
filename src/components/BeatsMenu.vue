@@ -47,12 +47,12 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(["sizesRange"])
+		...mapGetters(["sizesRange","currentSong"])
 	},
 	mounted() {
-		this.beats = this.$store.state.currentSong.beats;
-		this.size = this.$store.state.currentSong.size;
-		this.sFirstBeat = this.$store.state.currentSong.sFirstBeat;
+		this.beats = this.currentSong.beats;
+		this.size = this.currentSong.size;
+		this.sFirstBeat = this.currentSong.sFirstBeat;
 
 		setTimeout(() => {
 			this.markAsPressed(this.size, ".beats-menu__size-item");
