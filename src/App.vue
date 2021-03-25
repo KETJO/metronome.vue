@@ -46,7 +46,7 @@ export default {
 				if (mT === mutation.type) this.totalSaveChanges();
 			});
 		});
-		this.registerWorker();
+		//this.registerWorker();
 	},
 	beforeDestroy() {
 		this.totalSaveChanges();
