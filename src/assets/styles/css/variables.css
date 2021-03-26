@@ -166,7 +166,6 @@ path{
 	height: 35px!important;
 	background: var(--mainDark)!important;
 	box-shadow: inset 0px 15px 20px var(--boxShadowDark), inset 0px -15px 30px var(--boxShadowLight)!important;
-	transform: rotate(-120deg);
 	margin: -10px 7px 0px!important;
 }
 .rs-handle.rs-move {

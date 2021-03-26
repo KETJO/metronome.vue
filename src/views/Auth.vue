@@ -27,14 +27,13 @@
 			) log in
 			#registration.pointer(@click="$router.push('/reg')") sign-up now
 	#noAuthorize 
-		button.modal-btn(@click="$router.push({ path: '/main' })") use without song list &rArr;
+		button.modal-btn(@click="$router.push({ path: '/' })") use without song list &rArr;
 </template>
 
 <script>
 /* eslint-disable */
 import { required, email, minLength } from "vuelidate/lib/validators";
 import { mapGetters } from "vuex";
-
 
 export default {
 	mixin: [],
@@ -61,7 +60,7 @@ export default {
 					params: { message: "loged in" }
 				});
 			} catch (e) {
-				alert("Something went wrong, please try again");
+				
 			}
 		},
 		async logOut() {

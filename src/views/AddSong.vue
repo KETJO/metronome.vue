@@ -18,7 +18,9 @@
 			.add-song__bpm-info 
 				span(ref="infoModal") 
 		.add-song__beats 
-			h3 beats
+			.add-song__nums
+				h3 beats
+				h3#beatsValue.boxGlow {{ song.beats }}
 			input(type="range", min="1", max="16", step="1", v-model="song.beats") 
 		.add-song__size 
 			h3 size
@@ -68,11 +70,10 @@ export default {
 		addSong() {
 			this.song.id = uniqid();
 			this.ADD_SONG({ ...this.song });
-			this.$router.push("/main");
+			this.$router.push("/");
 		},
 		goBack() {
-			this.$router.push("/main");
-			this.LOAD_SONG(this.defaultSong);
+			this.$router.push("/");
 		}
 	},
 	computed: {
@@ -84,8 +85,7 @@ export default {
 		}, 0);
 		this.bpmHistory = [120];
 		this.song = this.currentSong;
-	},
-	watch: {}
+	}
 };
 </script>
 
@@ -111,8 +111,21 @@ export default {
 			color: var(--mainGrey)
 			border-radius: 10px
 			font-weight: 800
+	&__nums 
+		display: flex 
+		#beatsValue
+			color: var(--akcentLight)
+			margin-left: 1rem
 	&__bpm
 		position: relative
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button
+			-webkit-appearance: none
+			margin: 0
+		input[type=number]
+			-moz-appearance: textfield
+	.add-song__nums
+		margin-bottom: .5rem  
 	&__bpm-info
 		width: 100%
 		display: flex
@@ -125,6 +138,7 @@ export default {
 			text-align: right
 			font-size: 1.5rem
 			color: red
+
 	&__size-items
 		margin-top: 1.5rem
 	&__total

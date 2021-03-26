@@ -1,11 +1,11 @@
 <template lang="pug">
 .about 
 	.page__title.about__title 
-		router-link(to="/main") 
+		router-link(to="/") 
 			.back-arrow.textGlow &#8592;
 		h2 About
 	.page__content.about__content
-		p#version Current version {{ $store.state.version }}
+		p#version Current version 1.1
 
 		p Hi, there! My name is
 			a(href="https://www.facebook.com/erlan.zharkeev/") Erlan Zharkeev

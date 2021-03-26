@@ -9,30 +9,32 @@
 				v-for="(beat, i) in Number(currentSong.beats)",
 				:class="{ sFbeat: i == 0 && currentSong.sFirstBeat }"
 			) 
-	.info(v-show="user.length>0")
-		.saveUpdate
+	.info
+		.saveUpdate.pointer(v-if="user.length > 0")
 			.saveUpdate__btn(
-				v-if="currentSong.id === 0",
+				v-if="currentSong.id === '0aaaaaaaa'",
 				@click="$router.push({ name: 'AddSong' })"
-			)
-				span save as song
-			.saveUpdate__btn(v-else, @click="updateSong")
-				span update song
+			) save as song
+			.saveUpdate__btn(v-else, @click="updateSong") update song
 
-		.title.textGlow
+		.title.textGlow.pointer(v-if="user.length > 0")
 			h2(@click="$router.push({ name: 'Songs' })") {{ currentSong.author }} - {{ currentSong.title }}
-			
+		.info-offline(v-else)
+			router-link(to="/auth") 
+				h2 offline mode
+
 	.volume 
 		.volume__container 
-			img(src="../assets/img/volume.png")
-			input(
-				type="range",
-				v-model="vol",
-				min="0",
-				max="100",
-				step="1",
-				@input="changeVol"
-			)
+			img(src="../assets/img/volume.png", alt="volume")
+			label(for="volSlider")
+				input#volSlider(
+					type="range",
+					v-model="vol",
+					min="0",
+					max="100",
+					step="1",
+					@input="changeVol"
+				)
 	.bpm 
 		.down.arrow.blockSelect.pointer.neuro-outpressed(
 			@mousedown="changeBpm('down')"
@@ -56,14 +58,14 @@
 			line-cap="round",
 			radius="105",
 			:update="theming",
-			:change="stopTheming"
+			:change="stopTheming",
+			:animation="false"
 		)
 </template>
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
 import controls from "../mixins/controls";
-// import firebase from "firebase/app";
 
 export default {
 	mixins: [controls],
@@ -103,17 +105,6 @@ export default {
 		this.bpmHistory = [120];
 		this.vol = this.volume;
 		this.showMessage(this.$route.params.message);
-
-		// firebase.auth().onAuthStateChanged(function(user) {
-		// 	if (user) {
-		// 		// User is signed in.
-		// 		console.log('signIn');
-		// 		console.log(user);
-		// 	} else {
-		// 		// No user is signed in.
-		// 		console.log('signOut');
-		// 	}
-		// });
 	},
 	watch: {
 		bpmShowModal() {
@@ -153,8 +144,12 @@ export default {
 	img
 		width: 3rem
 		height: 3rem
+	label
+		width: 100%
+		display: flex
+		justify-content: flex-end
 	input
-		width: 90%
+		width: 98%
 		height: 7px
 		-webkit-appearance: none
 		background-color: var(--mainGrey)
@@ -166,6 +161,8 @@ export default {
 		background-color: var(--akcentLight)
 		border: solid 1px var(--akcentLight)
 		box-shadow: 0px 0px 40px var(--akcentLight)
+		&:hover
+			cursor: pointer
 .beats-side
 	width: 100%
 	height: 100%
@@ -198,8 +195,12 @@ export default {
 	text-transform: uppercase
 	font-weight: 600
 	text-align: center
+	width: 60%
 	h2
-		margin: .4rem 0rem
+		text-align: right
+		overflow: hidden
+		white-space: nowrap
+		text-overflow: ellipsis
 	img
 		width: 2.5rem
 		height: 2.5rem
@@ -212,6 +213,18 @@ export default {
 	align-items: center
 	justify-content: space-between
 	align-self: flex-end
+	height: 3rem
+.info-offline
+	width: 100%
+	display: flex
+	justify-content: center
+	align-items: flex-end
+	h2
+		font-size: 1.5rem
+		color: var(--akcentLight)
+		text-transform: uppercase
+		font-weight: 800
+		letter-spacing: .2rem
 .saveUpdate
 	display: flex
 	align-items: center
@@ -219,10 +232,16 @@ export default {
 	font-size: 1rem
 	text-transform: uppercase
 	margin: 1rem 0rem
-	span
+	width: 30%
+	&__btn
+		width: 100%
 		border: solid 2px var(--mainGrey)
-		padding: .5rem 2rem
+		padding: .5rem 0rem
 		color: var(--mainGrey)
+		width: 100%
+		display: flex
+		justify-content: center
+
 .bpm
 	display: flex
 	justify-content: center
@@ -301,9 +320,10 @@ export default {
 	top: -15px
 	left: 50%
 	color: var(--akcentLight)
-	font-size: 1.5rem
+	font-size: 1.3rem
 	text-transform: uppercase
 	border: solid 2px var(--akcentLight)
 	transform: translate(-50%, -50%)
 	padding: 1rem 2rem
+	text-align: center
 </style>

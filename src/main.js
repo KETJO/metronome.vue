@@ -8,6 +8,7 @@ import Vuelidate from 'vuelidate'
 
 import 'firebase/auth'
 import 'firebase/database'
+import './registerServiceWorker'
 
 Vue.use(RoundSlider)
 Vue.use(Vuelidate)
@@ -29,7 +30,7 @@ new Vue({
   store,
   render: h => h(App)
   }).$mount('#app')
-  
+
 // let app;
 // firebase.auth().onAuthStateChanged(()=>{
 //   if(!app){

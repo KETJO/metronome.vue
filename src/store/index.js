@@ -23,7 +23,6 @@ export default new Vuex.Store({
       },
 
       info: {
-        version: '1.1',
         user:'',
         error: null,
       },
@@ -66,11 +65,11 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    metronomeData: state=>state.metronomeData,
     //const
     sizesRange:state=>state.metronomeData.constData.sizesRange,
     allSounds: state=>state.metronomeData.constData.allSounds,
     //info
-    version: state=>state.metronomeData.info.version,
     user: state=>state.metronomeData.info.user,
     error: state=>state.metronomeData.info.error,
     //lastCurrSett
@@ -86,15 +85,19 @@ export default new Vuex.Store({
     SET_NEW_STATE(state, data){
 			state.metronomeData = {...data.metronomeData}
 		},
-
+    UPDATE_STATE_FROM_LOCAL(state){
+      const locData = JSON.parse(localStorage.getItem('tempData'));
+      if(locData) state.metronomeData = locData;
+    },
+    RESET_STORE(state, data){
+      state.metronomeData = {...state.metronomeData, ...data}
+    },
     SET_USER_NAME(state,user){
       state.metronomeData.info.user=user
     },
     SET_ERROR(state, error){
-      console.log('error');
       state.metronomeData.info.error = error
     },
-
     CHANGE_THEME(state){
       state.metronomeData.lastCurrSett.themeDark = !state.metronomeData.lastCurrSett.themeDark;
     },
@@ -104,14 +107,12 @@ export default new Vuex.Store({
     CHANGE_SETTED_SOUND(state, value){
       state.metronomeData.lastCurrSett.settedSound = value;
     },
-
     CHANGE_CURRENT_VALS(state, newVals){
       state.metronomeData.currentSong=({...state.metronomeData.currentSong, ...newVals})
     },
     CHANGE_CURRENT_BPM(state, newBpm){
       state.metronomeData.currentSong.bpm = newBpm;
     },
-    
     ADD_SONG(state, song){
       state.metronomeData.songs.push(song)
     },
@@ -130,18 +131,19 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    saveToLocSto({getters}){
+      const data = JSON.stringify(getters.metronomeData);
+      localStorage.setItem('tempData', data);
+    },
     updateTheme(){
       const html = document.documentElement;
       if(!html.dataset.theme) html.setAttribute('data-theme', 'light')
       else html.removeAttribute('data-theme')
     },
-    async reg({dispatch, commit},{name, email, password}){
+
+    async reg({commit},{name, email, password}){
 			try{
 				await firebase.auth().createUserWithEmailAndPassword(email, password)
-				const uid = await dispatch('getUid')
-				
-				// await firebase.database().ref(`/users/${uid}/metronomeData`).set({user: name})
-
 				commit('SET_USER_NAME', name)
 			} catch(e){
 				commit('SET_ERROR', e)
@@ -149,13 +151,12 @@ export default new Vuex.Store({
 				throw e
 			}
 		},
+
     async login({dispatch, commit}, {email, password}){
 			try{
 				await firebase.auth().signInWithEmailAndPassword(email, password)
 				const uid = await dispatch('getUid')
-
 				await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('SET_NEW_STATE', data.val())})
-        
         dispatch('updateTheme')
 			} catch(e){
 				commit('SET_ERROR', e)
@@ -167,13 +168,15 @@ export default new Vuex.Store({
 			const user = firebase.auth().currentUser
 			return user ? user.uid : null
 		},
+
 		async logout({dispatch}){
 			try{
 				await dispatch('totalSaveToFb');
 				await firebase.auth().signOut()
-				console.log('loged out');
+        localStorage.removeItem('tempData')
 			}catch(e){}
 		},
+
     async totalSaveToFb({dispatch, rootState}){
 			const uid = await dispatch('getUid')
 			await firebase.database().ref(`/users/${uid}/`).set({metronomeData: rootState.metronomeData})

@@ -8,11 +8,12 @@ import Songs from '../views/Songs'
 import AddSong from '../views/AddSong'
 import EditSong from "../views/EditSong"
 import About from "../views/About"
+import Policy from "../views/Policy.vue"
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/auth',
     name: 'Auth',
     component: Auth
   },
@@ -22,7 +23,7 @@ const routes = [
     component: Reg
   },
   {
-    path: '/main',
+    path: '/',
     name: 'Main',
     component: Main,
   },
@@ -45,6 +46,11 @@ const routes = [
     path: '/about',
     name: 'About',
     component: About
+  },
+  {
+    path: '/policy',
+    name: 'Policy',
+    component: Policy
   },
 ]
 

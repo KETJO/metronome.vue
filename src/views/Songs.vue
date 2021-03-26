@@ -1,6 +1,6 @@
 <template lang="pug">
 .songs
-	router-link(to="/main") 
+	router-link(to="/") 
 		.back-arrow.textGlow &#8592;
 	.page__content
 		.songs__items
@@ -9,7 +9,7 @@
 			)(
 				v-for="song in songs"
 			) 
-				.song__title {{ song.author }} - {{ song.title }}
+				.song__title {{ song.title }} - {{ song.author }}  
 				.song__bpm {{ song.bpm }}
 				.song__beat {{ song.beats }} / {{ song.size }}
 				.song__load.textGlow(@click.prevent="loadSong(song)") load
@@ -27,7 +27,7 @@ export default {
 		...mapMutations(["LOAD_SONG"]),
 		loadSong(song) {
 			this.LOAD_SONG(song);
-			this.$router.push("/main");
+			this.$router.push("/");
 		}
 	}
 };

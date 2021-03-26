@@ -7,7 +7,7 @@
 		input(type="checkbox", v-model="isPlay")
 		span(v-if="!isPlay") play
 		span#stopBtn(v-else) stop
-	.sounds(@click="changeSound") 
+	.sounds.pointer(@click="changeSound") 
 		span {{ instrumentName }}
 	.tap.pointer.neuro-outpressed.main-btn(@click="tap('.tap')", ref="tap") 
 		span Tap
@@ -36,7 +36,22 @@ export default {
 			return this.currentSong;
 		},
 		instrumentName() {
-			return this.settedSound;
+			let insName = "rim-shot";
+			switch (this.settedSound) {
+				case "rim-shot":
+					insName = "click";
+					break;
+				case "rim-shot2":
+					insName = "rim-shot";
+					break;
+				case "hi-hat":
+					insName = "hi-hat";
+					break;
+				case "hi-hat2":
+					insName = "hi-hat 2";
+					break;
+			}
+			return insName;
 		}
 	},
 	methods: {
@@ -69,6 +84,7 @@ export default {
 		this.$store.subscribe(mutation => {
 			if (mutation.type == "CHANGE_VOL") this.updateSound();
 		});
+		this.soundChangeIndex = this.allSounds.indexOf(this.settedSound);
 	},
 	beforeDestroy() {
 		this.timerStop();

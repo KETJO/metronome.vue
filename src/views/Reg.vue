@@ -34,19 +34,19 @@
 			label
 				input#acceptRule(type="checkbox", v-model="privacy")
 				span#fake 
-				span I have read and agree
+				span.blockSelect I have read and agree
 				router-link(to="/policy") privacy policy
-		#authorize
+		#authorize.pointer
 			button.modal-btn(
 				:disabled="form.email.length < 1 || form.password.length < 1 || !privacy"
 			) sign up
-			#registration(@click="$router.push('/')") authorize
+			#registration(@click="$router.push('/auth')") authorize
 </template>
 
 <script>
 /* eslint-disable */
 import { required, email, minLength } from "vuelidate/lib/validators";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
 	mixin: [],
@@ -77,12 +77,11 @@ export default {
 					params: { message: "account registred" }
 				});
 			} catch (e) {
-				alert("Something went wrong, please try again");
 			}
 		}
 	},
 	computed: {
-		...mapGetters(['error'])
+		...mapGetters(["error"])
 	},
 	validations: {
 		form: {

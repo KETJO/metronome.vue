@@ -24,7 +24,7 @@
 			.logOut.pointer(v-if="user.length > 0", @click="logout") 
 				span logout
 				img(src="../assets/img/logout.png")
-			router-link#authorize(v-else, to="/") authorize &crarr;
+			router-link#authorize(v-else, to="/auth") authorize &crarr;
 </template>
 
 <script>
@@ -41,7 +41,7 @@ export default {
 	}),
 	methods: {
 		...mapActions(["updateTheme"]),
-		...mapMutations(["CHANGE_THEME"]),
+		...mapMutations(["CHANGE_THEME", "RESET_STORE"]),
 		changeTheme() {
 			this.CHANGE_THEME();
 			this.updateTheme();
@@ -53,7 +53,23 @@ export default {
 		},
 		async logout() {
 			await this.$store.dispatch("logout");
-			this.$router.push("/");
+			this.$router.push("/auth");
+			const resetStore = {
+				info: {
+					user: "",
+					error: null
+				},
+				currentSong: {
+					author: "Unknown",
+					id: "0aaaaaaaa",
+					title: "new song",
+					bpm: 120,
+					beats: "4",
+					size: "4",
+					sFirstBeat: true
+				}
+			};
+			this.RESET_STORE(resetStore);
 		}
 	},
 	computed: {

@@ -7,7 +7,8 @@
 <script>
 import RotateScreen from "./views/RotateScreen";
 import Metronome from "./components/Metronome";
-
+import firebase from "firebase/app";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
 	name: "App",
 	components: {
@@ -15,25 +16,22 @@ export default {
 		Metronome
 	},
 	methods: {
+		...mapActions(["updateTheme"]),
+		...mapMutations(["UPDATE_STATE_FROM_LOCAL"]),
 		async totalSaveChanges() {
 			await this.$store.dispatch("totalSaveToFb");
-		},
-		async registerWorker() {
-			if (navigator.serviceWorker) {
-				try {
-					const reg = await navigator.serviceWorker.register(
-						"/metronome/sw.js"
-					);
-					console.log("sw register success", reg);
-				} catch (e) {
-					console.log(e);
-					console.log("sw register fail");
-				}
-			}
 		}
 	},
 	beforeCreate() {},
+	computed: {
+		...mapGetters(["user"])
+	},
 	mounted() {
+		let isAuth = false;
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) isAuth = true;
+			else isAuth = false;
+		});
 		const mutationsTypes = [
 			"ADD_SONG",
 			"UPDATE_SONG",
@@ -43,14 +41,17 @@ export default {
 		];
 		this.$store.subscribe(mutation => {
 			mutationsTypes.forEach(mT => {
-				if (mT === mutation.type) this.totalSaveChanges();
+				if (mT === mutation.type && isAuth) {
+					this.totalSaveChanges();
+					this.$store.dispatch("saveToLocSto");
+				}
 			});
 		});
-		//this.registerWorker();
+		if (this.user === "") this.UPDATE_STATE_FROM_LOCAL();
+		this.updateTheme();
 	},
-	beforeDestroy() {
-		this.totalSaveChanges();
-	}
+	beforeUpdate() {},
+	beforeDestroy() {}
 };
 </script>
 
