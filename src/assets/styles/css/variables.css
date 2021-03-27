@@ -1,21 +1,17 @@
 html {
 	--mainBg: #212529;
+	--boxShadowDark: #111315;
+	--boxShadowLight: #31373d;
+	--bgOutpressed: #212529;
+	--bgPressed: linear-gradient(145deg, #1e2125, #23282c);
+
 	--akcentLight: #109EF1;
-	--akcentDark: #046BB0;
 	--yellowLight: rgb(253, 255, 122);
 	--mainGrey: #74797D;
 	--red1: rgb(218, 77, 77);
 
-	--boxShadowDark: #111315;
-	--boxShadowLight: #31373d;
-
-	--bgOutpressed: #212529;
-	--bgPressed: linear-gradient(145deg, #1e2125, #23282c);
-	
 	--knobOuter: 200px;
 	--knobInner: 170px;
-
-	--volSliderW: 250px;
 
 	color: var(--mainGrey);
 	width: 100%;
@@ -44,6 +40,9 @@ body *:after {
 	transition: background-color .1s linear, 
 				color .1s linear,
 				box-shadow .1s linear
+}
+html[data-theme="light"] body {
+	background-color: grey
 }
 /*animation*/
 .fade-enter-active, .fade-leave-active {

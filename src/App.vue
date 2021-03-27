@@ -37,7 +37,8 @@ export default {
 			"UPDATE_SONG",
 			"DELETE_SONG",
 			"LOAD_SONG",
-			"CHANGE_THEME"
+			"CHANGE_THEME",
+			"CHANGE_SETTED_SOUND"
 		];
 		this.$store.subscribe(mutation => {
 			mutationsTypes.forEach(mT => {
@@ -56,6 +57,7 @@ export default {
 </script>
 
 <style lang="sass">
+
 #app
 	width: 100%
 	height: 100%

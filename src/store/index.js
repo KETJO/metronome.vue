@@ -83,7 +83,7 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_NEW_STATE(state, data){
-			state.metronomeData = {...data.metronomeData}
+      if(data) state.metronomeData = {...data.metronomeData}
 		},
     UPDATE_STATE_FROM_LOCAL(state){
       const locData = JSON.parse(localStorage.getItem('tempData'));
@@ -135,16 +135,17 @@ export default new Vuex.Store({
       const data = JSON.stringify(getters.metronomeData);
       localStorage.setItem('tempData', data);
     },
-    updateTheme(){
+    updateTheme({rootState}){
       const html = document.documentElement;
-      if(!html.dataset.theme) html.setAttribute('data-theme', 'light')
-      else html.removeAttribute('data-theme')
+      if(rootState.metronomeData.lastCurrSett.themeDark) html.removeAttribute('data-theme')
+      else html.setAttribute('data-theme', 'light')
     },
 
     async reg({commit},{name, email, password}){
 			try{
 				await firebase.auth().createUserWithEmailAndPassword(email, password)
 				commit('SET_USER_NAME', name)
+        dispatch('saveToLocSto')
 			} catch(e){
 				commit('SET_ERROR', e)
         console.log(e);
@@ -155,20 +156,43 @@ export default new Vuex.Store({
     async login({dispatch, commit}, {email, password}){
 			try{
 				await firebase.auth().signInWithEmailAndPassword(email, password)
-				const uid = await dispatch('getUid')
-				await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('SET_NEW_STATE', data.val())})
-        dispatch('updateTheme')
+        await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('SET_NEW_STATE', data.val())})
+        dispatch('saveToLocSto')
 			} catch(e){
 				commit('SET_ERROR', e)
 				throw e
 			}
 		},
-		
+		async loginGoogle({dispatch, commit}){
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await firebase.auth().signInWithPopup(provider);
+        commit('SET_USER_NAME', result.user.displayName);
+        const uid = await dispatch('getUid');
+        await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('SET_NEW_STATE', data.val())})
+        dispatch('updateTheme');
+        dispatch('saveToLocSto')
+      } catch(e){
+        console.log(e);
+      }
+    },
+    async loginFacebook({dispatch, commit}){
+      try{
+        const facebookProvider = new firebase.auth.FacebookAuthProvider();
+				const result = await firebase.auth().signInWithPopup(facebookProvider)
+        commit('SET_USER_NAME', result.user.displayName);
+        const uid = await dispatch('getUid');
+        await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('SET_NEW_STATE', data.val())})
+        dispatch('updateTheme');
+        dispatch('saveToLocSto')
+      }catch(e){
+        console.log(e);
+      }
+    },
 		getUid(){
 			const user = firebase.auth().currentUser
 			return user ? user.uid : null
 		},
-
 		async logout({dispatch}){
 			try{
 				await dispatch('totalSaveToFb');
@@ -176,9 +200,9 @@ export default new Vuex.Store({
         localStorage.removeItem('tempData')
 			}catch(e){}
 		},
-
     async totalSaveToFb({dispatch, rootState}){
 			const uid = await dispatch('getUid')
+      console.log('ttstofb');
 			await firebase.database().ref(`/users/${uid}/`).set({metronomeData: rootState.metronomeData})
 		}
   },
