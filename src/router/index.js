@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import AuthType from "../views/AuthType"
 import Auth from "../views/Auth"
 import Reg from "../views/Reg"
 import Main from "../views/Main"
@@ -16,6 +17,11 @@ const routes = [
     path: '/auth',
     name: 'Auth',
     component: Auth
+  },
+  {
+    path: '/authType',
+    name: 'AuthType',
+    component: AuthType
   },
   {
     path: '/reg',

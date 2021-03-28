@@ -94,6 +94,7 @@ export default {
 <style lang="sass" scoped>
 .down-bar
 	width: 100%
+	height: 8%
 	display: flex
 	justify-content: space-between
 	align-items: center

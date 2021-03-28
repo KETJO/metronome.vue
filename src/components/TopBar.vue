@@ -24,7 +24,7 @@
 			.logOut.pointer(v-if="user.length > 0", @click="logout") 
 				span logout
 				img(src="../assets/img/logout.png")
-			router-link#authorize(v-else, to="/auth") authorize &crarr;
+			router-link#authorize(v-else, to="/authType") authorize &crarr;
 </template>
 
 <script>
@@ -81,18 +81,25 @@ export default {
 <style lang="sass" scoped>
 .top-bar
 	width: 100%
+	height: 8%
 	display: flex
 	justify-content: space-between
 	.beats-set
 		font-size: 1.5rem
 		font-weight: 800
 		&__content
-			position: absolute
+			display: flex 
+			align-items: center
+			background-color: var(--mainBg)
+			position: fixed
 			width: 100%
 			height: 100%
 			top: 0%
 			left: 0%
 			z-index: 4
+			padding: 0rem 4rem
+			+MW500 
+				padding: 0rem
 .menu
 	z-index: 3
 .menu-content

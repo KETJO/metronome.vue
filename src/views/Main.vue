@@ -29,4 +29,5 @@ export default {
 .main
 	display: flex
 	flex-direction: column
+	justify-content: space-between
 </style>

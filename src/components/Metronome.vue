@@ -6,9 +6,7 @@
 <script>
 export default {
 	components: {},
-	beforeCreate() {
-		
-	},
+	beforeCreate() {}
 };
 </script>
 
@@ -22,7 +20,7 @@ export default {
 		position: relative
 		width: 90%
 		max-width: 500px
-		max-height: 800px
+		max-height: 750px
 		height: 100%
 		margin: 0 auto
 		display: flex
@@ -33,4 +31,5 @@ export default {
 		box-shadow: 5px 5px 8px var(--boxShadowDark), -2px -5px 10px var(--boxShadowLight)
 		+MW500
 			box-shadow: none
+			max-height: none
 </style>

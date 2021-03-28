@@ -117,8 +117,8 @@ html[data-theme="light"] .textGlow {
 	text-shadow: none;
 }
 .main-btn {
-	width: 60px;
-	height: 60px;
+	width: 	6rem;
+	height: 6rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;

@@ -1,7 +1,7 @@
 <template lang="pug">
 .auth 
 	.error(v-if="error") {{ error.message }}
-	h2 authorization
+	h2 email authorization
 	form(@submit.prevent="checkForm") 
 		#email
 			label(for="formEmail") email
@@ -26,14 +26,7 @@
 				:disabled="form.email.length < 1 || form.password.length < 1"
 			) log in
 			#registration.pointer(@click="$router.push('/reg')") sign-up now
-	#loginGoogle.modal-btn(@click="googleAuth()")
-		img(src="../assets/img/google.png")
-		span log in with google
-	#loginFacebook.modal-btn(@click="facebookAuth()")
-		img(src="../assets/img/facebook.png")
-		span log in facebook
-	#noAuthorize 
-		button.modal-btn(@click="$router.push({ path: '/' })") use without song list &rArr;
+	
 </template>
 
 <script>
@@ -67,34 +60,14 @@ export default {
 				});
 			} catch (e) {}
 		},
-		async logOut() {
-			await this.$store.dispatch("logout");
-		},
-		async googleAuth() {
-			try {
-				await this.$store.dispatch("loginGoogle");
-				this.$router.push({
-					name: "Main",
-					params: { message: "loged in" }
-				});
-			} catch (e) {}
-		},
-		async facebookAuth(){
-			try{
-				await this.$store.dispatch("loginFacebook");
-				this.$router.push({
-					name: "Main",
-					params: { message: "loged in" }
-				});
-			}catch(e){}
-			
-		}
+
+		
 	},
 	computed: {
 		...mapGetters(["error"])
 	},
 	mounted() {
-		//this.$store.dispatch("logout");
+
 	},
 	validations: {
 		form: {
@@ -111,30 +84,5 @@ export default {
 };
 </script>
 <style lang="sass" scoped>
-#loginGoogle 
-	margin-top: 2rem
-#loginGoogle, #loginFacebook
-	align-items: center
-	width: 100%
-	display: flex
-	justify-content: center
-	align-items: center
-	margin-bottom: 2rem
-	img
-		width: 3rem
-		height: 3rem
-		justify-self: end
-	span
-		font-size: 1.3rem
-		text-transform: uppercase
-		font-weight: 800
-		margin-left: 1rem
-		color: var(--akcentLight)
-#noAuthorize
-	width: 100%
-	color: var(--greenCustom)
-	button
-		width: 100%
-		text-transform: uppercase
-		font-size: 1.2rem
+
 </style>

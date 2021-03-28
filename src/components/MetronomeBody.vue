@@ -127,12 +127,11 @@ export default {
 <style lang="sass" scoped>
 .metronome-body
 	width: 100%
-	height: 100%
+	height: 75%
 	display: grid
 	grid-template-columns: 1fr
 	justify-items: center
 	align-items: center
-	padding: 2rem 0rem
 	color: var(--mainGrey)
 	position: relative
 .volume

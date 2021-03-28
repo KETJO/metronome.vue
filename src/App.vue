@@ -18,9 +18,9 @@ export default {
 	methods: {
 		...mapActions(["updateTheme"]),
 		...mapMutations(["UPDATE_STATE_FROM_LOCAL"]),
-		async totalSaveChanges() {
-			await this.$store.dispatch("totalSaveToFb");
-		}
+		// async totalSaveChanges() {
+		// 	await this.$store.dispatch("totalSaveToFb");
+		// }
 	},
 	beforeCreate() {},
 	computed: {
@@ -32,6 +32,7 @@ export default {
 			if (user) isAuth = true;
 			else isAuth = false;
 		});
+
 		const mutationsTypes = [
 			"ADD_SONG",
 			"UPDATE_SONG",
@@ -43,21 +44,19 @@ export default {
 		this.$store.subscribe(mutation => {
 			mutationsTypes.forEach(mT => {
 				if (mT === mutation.type && isAuth) {
-					this.totalSaveChanges();
-					this.$store.dispatch("saveToLocSto");
+					// this.totalSaveChanges();
+					// this.$store.dispatch("saveToLocSto");
+					this.$store.dispatch("totalSaveToFb");
 				}
 			});
 		});
 		if (this.user === "") this.UPDATE_STATE_FROM_LOCAL();
 		this.updateTheme();
 	},
-	beforeUpdate() {},
-	beforeDestroy() {}
 };
 </script>
 
 <style lang="sass">
-
 #app
 	width: 100%
 	height: 100%

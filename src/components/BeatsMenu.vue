@@ -1,6 +1,6 @@
 <template lang="pug">
 transition(name="fade")
-	.beats-menu
+	.beats-menu.neuro-outpressed
 		.beats-menu__output.textGlow 
 			h1 {{ beats }} / {{ size }}
 		.beats-menu__beats
@@ -53,7 +53,6 @@ export default {
 		this.beats = this.currentSong.beats;
 		this.size = this.currentSong.size;
 		this.sFirstBeat = this.currentSong.sFirstBeat;
-
 		setTimeout(() => {
 			this.markAsPressed(this.size, ".beats-menu__size-item");
 		}, 0);
@@ -72,6 +71,9 @@ export default {
 	justify-content: center
 	flex-direction: column
 	align-items: center
+	max-width: 500px
+	max-height: 750px
+	margin: 0 auto
 	padding: 4rem
 	&__output
 		font-size: 4rem
