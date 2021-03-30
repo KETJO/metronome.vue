@@ -1,6 +1,5 @@
 <template lang="pug">
 .auth 
-	.error(v-if="error") {{ error.message }}
 	h2 email authorization
 	form(@submit.prevent="checkForm") 
 		#email
@@ -26,14 +25,13 @@
 				:disabled="form.email.length < 1 || form.password.length < 1"
 			) log in
 			#registration.pointer(@click="$router.push('/reg')") sign-up now
-	
 </template>
 
 <script>
 /* eslint-disable */
 import { required, email, minLength } from "vuelidate/lib/validators";
-import { mapGetters } from "vuex";
-
+import { mapMutations, mapActions } from "vuex";
+import firebase from "firebase/app";
 export default {
 	mixin: [],
 	data: () => ({
@@ -43,31 +41,34 @@ export default {
 		}
 	}),
 	methods: {
+		...mapActions(["getData", "accessAllowed"]),
+		...mapMutations(["SET_NEW_STATE", "SET_INFO_MESSAGE"]),
 		async checkForm() {
 			if (this.$v.form.$invalid) {
 				this.$v.form.$touch();
 				return;
 			}
-			const loginData = {
-				email: this.form.email,
-				password: this.form.password
-			};
 			try {
-				await this.$store.dispatch("login", loginData);
-				this.$router.push({
-					name: "Main",
-					params: { message: "loged in" }
-				});
-			} catch (e) {}
-		},
-
-		
-	},
-	computed: {
-		...mapGetters(["error"])
-	},
-	mounted() {
-
+				await firebase
+					.auth()
+					.signInWithEmailAndPassword(
+						this.form.email,
+						this.form.password
+					);
+				const uid = await this.$store.dispatch("getUid");
+				await firebase
+					.database()
+					.ref(`/users/${uid}/`)
+					.on("value", snap => {
+						const data = snap.val().metronomeData;
+						this.SET_NEW_STATE(data);
+					});
+				this.accessAllowed("loged in with Email");
+			} catch (e) {
+				this.SET_INFO_MESSAGE(e.message);
+				console.log("failed to access with email", e.message);
+			}
+		}
 	},
 	validations: {
 		form: {
@@ -84,5 +85,4 @@ export default {
 };
 </script>
 <style lang="sass" scoped>
-
 </style>

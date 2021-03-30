@@ -1,8 +1,6 @@
 <template lang="pug">
 .metronome-body 
-	transition(name="fade")
-		.message(v-if="message") {{ message }}
-
+	
 	.beats-side
 		.beats-side__content
 			.beat(
@@ -11,11 +9,7 @@
 			) 
 	.info
 		.saveUpdate.pointer(v-if="user.length > 0")
-			.saveUpdate__btn(
-				v-if="currentSong.id === '0aaaaaaaa'",
-				@click="$router.push({ name: 'AddSong' })"
-			) save as song
-			.saveUpdate__btn(v-else, @click="updateSong") update song
+			.saveUpdate__btn(@click="updateSong") update song
 
 		.title.textGlow.pointer(v-if="user.length > 0")
 			h2(@click="$router.push({ name: 'Songs' })") {{ currentSong.author }} - {{ currentSong.title }}
@@ -78,7 +72,7 @@ export default {
 		message: false
 	}),
 	methods: {
-		...mapMutations(["CHANGE_CURRENT_VALS", "UPDATE_SONG", "CHANGE_VOL"]),
+		...mapMutations(["CHANGE_CURRENT_VALS", "UPDATE_SONG", "CHANGE_VOL", "SET_INFO_MESSAGE"]),
 		theming() {
 			this.$refs.bpm.classList.add("textGlow");
 			this.$refs.bpm.style.color = "var(--akcentLight)";
@@ -93,8 +87,11 @@ export default {
 		},
 		updateSong() {
 			const song = this.currentSong;
+			this.SET_INFO_MESSAGE('song updated')
 			this.UPDATE_SONG(song);
-			this.showMessage("song updated");
+		},
+		async save() {
+			await this.$store.dispatch("saveToFb");
 		}
 	},
 	computed: {
@@ -104,7 +101,7 @@ export default {
 		this.song.bpm = this.currentSong.bpm;
 		this.bpmHistory = [120];
 		this.vol = this.volume;
-		this.showMessage(this.$route.params.message);
+		if(this.user) this.save()
 	},
 	watch: {
 		bpmShowModal() {
@@ -314,15 +311,5 @@ export default {
 			margin-top: 6rem
 			&:disabled
 				opacity: .3
-.message
-	position: absolute
-	top: -15px
-	left: 50%
-	color: var(--akcentLight)
-	font-size: 1.3rem
-	text-transform: uppercase
-	border: solid 2px var(--akcentLight)
-	transform: translate(-50%, -50%)
-	padding: 1rem 2rem
-	text-align: center
+
 </style>

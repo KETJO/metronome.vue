@@ -67,12 +67,6 @@ const controls = {
 					item.classList.add("neuroPressed");
 			});
 		},
-		showMessage(m){
-			this.message=m;
-			setTimeout(() => {
-				this.message=false;
-			}, 2500);
-		}
 	},
 }
 

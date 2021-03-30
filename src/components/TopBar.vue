@@ -41,10 +41,10 @@ export default {
 	}),
 	methods: {
 		...mapActions(["updateTheme"]),
-		...mapMutations(["CHANGE_THEME", "RESET_STORE"]),
+		...mapMutations(["CHANGE_THEME", "RESET_STORE", "UPDATE_THEME"]),
 		changeTheme() {
 			this.CHANGE_THEME();
-			this.updateTheme();
+			this.UPDATE_THEME();
 		},
 		closeMenu() {
 			setTimeout(() => {
@@ -53,17 +53,17 @@ export default {
 		},
 		async logout() {
 			await this.$store.dispatch("logout");
-			this.$router.push("/auth");
+			this.$router.push("/authType");
 			const resetStore = {
 				info: {
 					user: "",
-					error: null
+					infoMessage: ''
 				},
 				currentSong: {
-					author: "Unknown",
-					id: "0aaaaaaaa",
-					title: "new song",
-					bpm: 120,
+					id: "2cccccccc",
+					author: "RadioHead",
+					title: "Creep",
+					bpm: 92,
 					beats: "4",
 					size: "4",
 					sFirstBeat: true
@@ -72,8 +72,9 @@ export default {
 			this.RESET_STORE(resetStore);
 		}
 	},
+	mounted() {},
 	computed: {
-		...mapGetters(["user", "themeDark", "currentSong"])
+		...mapGetters(["user", "themeDark", "currentSong", "infoMessage"])
 	}
 };
 </script>
@@ -88,7 +89,7 @@ export default {
 		font-size: 1.5rem
 		font-weight: 800
 		&__content
-			display: flex 
+			display: flex
 			align-items: center
 			background-color: var(--mainBg)
 			position: fixed
@@ -98,7 +99,7 @@ export default {
 			left: 0%
 			z-index: 4
 			padding: 0rem 4rem
-			+MW500 
+			+MW500
 				padding: 0rem
 .menu
 	z-index: 3

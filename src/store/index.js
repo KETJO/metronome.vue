@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase/app'
+import router from '../router'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -12,19 +13,9 @@ export default new Vuex.Store({
         allSounds: ["rim-shot", "hi-hat", "rim-shot2", "hi-hat2"],
       },
 
-      defaultSong:{
-        author: "Unknown",
-        id: "0aaaaaaaa",
-        title:"new song",
-        bpm: 120,
-        beats: "4",
-        size: "4",
-        sFirstBeat: true
-      },
-
       info: {
         user:'',
-        error: null,
+        infoMessage: ''
       },
 
       lastCurrSett: {
@@ -34,10 +25,10 @@ export default new Vuex.Store({
       },
 
       currentSong: {
-        author: "Unknown",
-        id: "0aaaaaaaa",
-        title:"new song",
-        bpm: 120,
+        id: "2cccccccc",
+        author: "RadioHead",
+        title: "Creep",
+        bpm: 92,
         beats: "4",
         size: "4",
         sFirstBeat: true
@@ -71,7 +62,7 @@ export default new Vuex.Store({
     allSounds: state=>state.metronomeData.constData.allSounds,
     //info
     user: state=>state.metronomeData.info.user,
-    error: state=>state.metronomeData.info.error,
+    infoMessage: state=>state.metronomeData.info.infoMessage,
     //lastCurrSett
     themeDark: state=>state.metronomeData.lastCurrSett.themeDark,
     volume: state=>state.metronomeData.lastCurrSett.volume,
@@ -85,21 +76,22 @@ export default new Vuex.Store({
     SET_NEW_STATE(state, data){
       if(data) state.metronomeData = {...data.metronomeData}
 		},
-    UPDATE_STATE_FROM_LOCAL(state){
-      const locData = JSON.parse(localStorage.getItem('tempData'));
-      if(locData) state.metronomeData = locData;
-    },
     RESET_STORE(state, data){
       state.metronomeData = {...state.metronomeData, ...data}
     },
     SET_USER_NAME(state,user){
       state.metronomeData.info.user=user
     },
-    SET_ERROR(state, error){
-      state.metronomeData.info.error = error
+    SET_INFO_MESSAGE(state, message){
+      state.metronomeData.info.infoMessage = message;
     },
     CHANGE_THEME(state){
       state.metronomeData.lastCurrSett.themeDark = !state.metronomeData.lastCurrSett.themeDark;
+    },
+    UPDATE_THEME(state){
+      const html = document.documentElement;
+      if(state.metronomeData.lastCurrSett.themeDark) html.removeAttribute('data-theme')
+      else html.setAttribute('data-theme', 'light')
     },
     CHANGE_VOL(state, vol){
       state.metronomeData.lastCurrSett.volume=vol
@@ -131,79 +123,54 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    saveToLocSto({getters}){
-      const data = JSON.stringify(getters.metronomeData);
-      localStorage.setItem('tempData', data);
-    },
-    updateTheme({rootState}){
-      const html = document.documentElement;
-      if(rootState.metronomeData.lastCurrSett.themeDark) html.removeAttribute('data-theme')
-      else html.setAttribute('data-theme', 'light')
-    },
-
-    async reg({commit},{name, email, password}){
-			try{
-				await firebase.auth().createUserWithEmailAndPassword(email, password)
-				commit('SET_USER_NAME', name)
-        dispatch('saveToLocSto')
-			} catch(e){
-				commit('SET_ERROR', e)
-        console.log(e);
-				throw e
-			}
+    async accessAllowed({dispatch, commit}, message) {
+      //show message 
+      commit('SET_INFO_MESSAGE', message);
+      //localSave
+      const uid = await dispatch('getUid');
+			localStorage.setItem("uid", JSON.stringify(uid));
+      //theme update
+      commit('UPDATE_THEME')
+      //go to
+			router.push({
+				name: "Main",
+			});
 		},
-
-    async login({dispatch, commit}, {email, password}){
-			try{
-				await firebase.auth().signInWithEmailAndPassword(email, password)
-        await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('SET_NEW_STATE', data.val())})
-        dispatch('saveToLocSto')
-			} catch(e){
-				commit('SET_ERROR', e)
-				throw e
-			}
-		},
-		async loginGoogle({dispatch, commit}){
-      try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        const result = await firebase.auth().signInWithPopup(provider);
-        commit('SET_USER_NAME', result.user.displayName);
-        const uid = await dispatch('getUid');
-        await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('SET_NEW_STATE', data.val())})
-        dispatch('updateTheme');
-        dispatch('saveToLocSto')
-      } catch(e){
-        console.log(e);
-      }
-    },
-    async loginFacebook({dispatch, commit}){
-      try{
-        const facebookProvider = new firebase.auth.FacebookAuthProvider();
-				const result = await firebase.auth().signInWithPopup(facebookProvider)
-        commit('SET_USER_NAME', result.user.displayName);
-        const uid = await dispatch('getUid');
-        await firebase.database().ref(`/users/${uid}/`).on('value', function(data){commit('SET_NEW_STATE', data.val())})
-        dispatch('updateTheme');
-        dispatch('saveToLocSto')
-      }catch(e){
-        console.log(e);
-      }
-    },
-		getUid(){
-			const user = firebase.auth().currentUser
+    async getUid(){
+      const user = firebase.auth().currentUser
 			return user ? user.uid : null
+    },
+    async updateStateFromFb({commit}){
+      const localUid = JSON.parse(localStorage.getItem("uid"));
+      if(localUid) {
+        await firebase.database().ref(`/users/${localUid}/`).on('value', snap=>{
+          commit('SET_NEW_STATE', snap.val());
+        })
+      }
+    },
+    async saveToFb({dispatch, rootState}){
+      try{
+        const uid = await dispatch('getUid');
+        let oldData;
+        await firebase.database().ref(`/users/${uid}/`).on('value', snap=>{
+          oldData = snap.val().metronomeData;
+        })
+        const currentData = rootState.metronomeData;
+        let metronomeData;
+        if(oldData) metronomeData = {...oldData, ...currentData};
+        else metronomeData = currentData;
+        await firebase.database().ref(`/users/${uid}/`).set({metronomeData});
+      }catch(e){  
+        console.log('firebase save error', e);
+      }
 		},
-		async logout({dispatch}){
+    async logout(){
 			try{
-				await dispatch('totalSaveToFb');
 				await firebase.auth().signOut()
-        localStorage.removeItem('tempData')
-			}catch(e){}
+        localStorage.removeItem("uid")
+			}catch(e){
+        console.log('logout error', e);
+      }
 		},
-    async totalSaveToFb({dispatch, rootState}){
-			const uid = await dispatch('getUid')
-      console.log('ttstofb');
-			await firebase.database().ref(`/users/${uid}/`).set({metronomeData: rootState.metronomeData})
-		}
   },
 })

@@ -1,6 +1,5 @@
 <template lang="pug">
 .auth 
-	.error(v-if="error") {{ error.message }}
 	h2 registration
 	form(@submit.prevent="checkForm")
 		#name 
@@ -46,8 +45,8 @@
 <script>
 /* eslint-disable */
 import { required, email, minLength } from "vuelidate/lib/validators";
-import { mapGetters } from "vuex";
-
+import { mapActions, mapMutations } from "vuex";
+import firebase from "firebase/app";
 export default {
 	mixin: [],
 	data: () => ({
@@ -60,28 +59,22 @@ export default {
 		}
 	}),
 	methods: {
+		...mapActions(['accessAllowed']),
+		...mapMutations(['SET_USER_NAME', "SET_INFO_MESSAGE"]),
 		async checkForm() {
 			if (this.$v.form.$invalid) {
 				this.$v.form.$touch();
 				return;
 			}
-			const regData = {
-				name: this.form.name,
-				email: this.form.email,
-				password: this.form.password
-			};
 			try {
-				await this.$store.dispatch("reg", regData);
-				this.$router.push({
-					name: "Main",
-					params: { message: "account registred" }
-				});
+				await firebase.auth().createUserWithEmailAndPassword(this.form.email, this.form.password)
+				this.SET_USER_NAME(this.form.name)
+				this.accessAllowed("account registred")
 			} catch (e) {
+				this.SET_INFO_MESSAGE(e.message);
+				console.log("failed to access with email", e.message);
 			}
 		}
-	},
-	computed: {
-		...mapGetters(["error"])
 	},
 	validations: {
 		form: {

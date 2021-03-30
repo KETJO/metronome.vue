@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import AuthType from "../views/AuthType"
-import Auth from "../views/Auth"
+import EmailAuth from "../views/EmailAuth"
 import Reg from "../views/Reg"
 import Main from "../views/Main"
 import Songs from '../views/Songs'
@@ -14,9 +14,9 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/auth',
-    name: 'Auth',
-    component: Auth
+    path: '/emailAuth',
+    name: 'EmailAuth',
+    component: EmailAuth
   },
   {
     path: '/authType',

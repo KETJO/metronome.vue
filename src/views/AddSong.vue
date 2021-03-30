@@ -52,7 +52,6 @@ import { mapGetters, mapMutations } from "vuex";
 var uniqid = require("uniqid");
 export default {
 	mixins: [controls],
-	components: {},
 	data: () => ({
 		song: {
 			id: null,
