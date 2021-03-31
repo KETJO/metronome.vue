@@ -68,7 +68,6 @@ const metronomeHandler = {
 		visualStart(clsName){
 			const beats = document.querySelectorAll(`.${clsName}`)
 			const beat = beats[this.beatCounter]
-			console.log(beat);
 			beats.forEach(beat=>{
 				beat.classList.remove('beatGlow')
 				beat.classList.remove('sfbGlow')
