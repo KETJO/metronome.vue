@@ -64,12 +64,20 @@ export default {
 			this.updateSound();
 		},
 		updateSound() {
+			// this.sound.high = new Howl({
+			// 	src: [`/metronome/media/sounds/${this.settedSound}/1.mp3`],
+			// 	volume: this.volume / 100
+			// });
+			// this.sound.low = new Howl({
+			// 	src: [`/metronome/media/sounds/${this.settedSound}/0.mp3`],
+			// 	volume: this.volume / 100
+			// });
 			this.sound.high = new Howl({
-				src: [`/metronome/media/sounds/${this.settedSound}/1.mp3`],
+				src: [`../media/sounds/${this.settedSound}/1.mp3`],
 				volume: this.volume / 100
 			});
 			this.sound.low = new Howl({
-				src: [`/metronome/media/sounds/${this.settedSound}/0.mp3`],
+				src: [`../media/sounds/${this.settedSound}/0.mp3`],
 				volume: this.volume / 100
 			});
 		}

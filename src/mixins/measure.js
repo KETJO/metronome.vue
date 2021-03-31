@@ -1,3 +1,4 @@
+const audioWorker = new Worker("../audioworker.js");
 const metronomeHandler = {
 	data:()=>({
 		beatCounter: 0,
@@ -11,11 +12,22 @@ const metronomeHandler = {
 	computed: {
 		
 	},
+	mounted() {
+		audioWorker.onmessage = e=> {
+			if (e.data == "tick") {
+				console.log("tick!");
+				this.totalStart()
+			}
+			else{
+				console.log("message: " + e.data);
+			}
+		}
+	},
 	methods: {
 		playStop(){
 			this.isPlay=!this.isPlay;
-			if(this.isPlay) this.timerStart();
-			else this.timerStop();
+			if(this.isPlay) this.start();
+			else this.stop();
 		},
 		updateSizeCoeficent(){
 			const size = Number(this.curVals.size);
@@ -34,32 +46,24 @@ const metronomeHandler = {
 					break
 			}
 		},
-		timerStart(){
+		start(){
 			this.updateSizeCoeficent();
 			this.timeInterval = 60/this.curVals.bpm*1000/this.sizeCoeficient; 
-			this.expected = Date.now() + this.timeInterval;
-			this.timeOut = setTimeout(this.round, this.timeInterval)
-		},
-		timerStop(){
-			clearTimeout(this.timeOut);
-			this.visualStop('beat');
-			this.visualStop('hBeat');
-			this.beatCounter=0;
-		},
-		round(){
-			this.updateSizeCoeficent();
-			this.timeInterval = 60/this.curVals.bpm*1000/this.sizeCoeficient;
-			this.totalStart();
-			this.drift = Date.now()-this.expected;
-			this.expected+=this.timeInterval;
-			this.timeOut=setTimeout(this.round, this.timeInterval-this.drift)
+			audioWorker.postMessage({"interval":this.timeInterval});
+			audioWorker.postMessage("start");
 		},
 		totalStart(){
 			if(this.beatCounter==this.curVals.beats) this.beatCounter=0;
-			this.visualStart('beat');
-			this.visualStart('hBeat');
-			this.soundStart();
-			this.beatCounter++;
+			this.visualStart('beat')
+			this.visualStart('hBeat')
+			this.soundStart()
+			this.beatCounter++
+		},
+		stop(){
+			audioWorker.postMessage("stop");
+			this.visualStop('beat')
+			this.visualStop('hBeat')
+			this.beatCounter=0
 		},
 		soundStart(){
 			if(this.beatCounter==0&&this.curVals.sFirstBeat) this.sound.high.play()
