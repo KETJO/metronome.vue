@@ -42,7 +42,8 @@ const metronomeHandler = {
 		},
 		timerStop(){
 			clearTimeout(this.timeOut);
-			this.visualStop();
+			this.visualStop('beat');
+			this.visualStop('hBeat');
 			this.beatCounter=0;
 		},
 		round(){
@@ -55,7 +56,8 @@ const metronomeHandler = {
 		},
 		totalStart(){
 			if(this.beatCounter==this.curVals.beats) this.beatCounter=0;
-			this.visualStart();
+			this.visualStart('beat');
+			this.visualStart('hBeat');
 			this.soundStart();
 			this.beatCounter++;
 		},
@@ -63,9 +65,10 @@ const metronomeHandler = {
 			if(this.beatCounter==0&&this.curVals.sFirstBeat) this.sound.high.play()
 			else this.sound.low.play()
 		},
-		visualStart(){
-			const beats = document.querySelectorAll('.beat')
+		visualStart(clsName){
+			const beats = document.querySelectorAll(`.${clsName}`)
 			const beat = beats[this.beatCounter]
+			console.log(beat);
 			beats.forEach(beat=>{
 				beat.classList.remove('beatGlow')
 				beat.classList.remove('sfbGlow')
@@ -73,8 +76,8 @@ const metronomeHandler = {
 			if(beat.classList.contains('sFbeat')) beat.classList.add('sfbGlow') 
 			else beat.classList.add('beatGlow')
 		},
-		visualStop(){
-			const beats = document.querySelectorAll('.beat')
+		visualStop(clsName){
+			const beats = document.querySelectorAll(`.${clsName}`)
 			beats.forEach(beat=>{
 				beat.classList.remove('beatGlow')
 				beat.classList.remove('sfbGlow')

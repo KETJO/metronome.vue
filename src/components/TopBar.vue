@@ -41,7 +41,12 @@ export default {
 	}),
 	methods: {
 		...mapActions(["updateTheme"]),
-		...mapMutations(["CHANGE_THEME", "RESET_STORE", "UPDATE_THEME"]),
+		...mapMutations([
+			"CHANGE_THEME",
+			"RESET_STORE",
+			"UPDATE_THEME",
+			"SET_INFO_MESSAGE"
+		]),
 		changeTheme() {
 			this.CHANGE_THEME();
 			this.UPDATE_THEME();
@@ -57,24 +62,15 @@ export default {
 			const resetStore = {
 				info: {
 					user: "",
-					infoMessage: ''
+					infoMessage: ""
 				},
-				currentSong: {
-					id: "2cccccccc",
-					author: "RadioHead",
-					title: "Creep",
-					bpm: 92,
-					beats: "4",
-					size: "4",
-					sFirstBeat: true
-				}
 			};
 			this.RESET_STORE(resetStore);
+			this.SET_INFO_MESSAGE("logged out");
 		}
 	},
-	mounted() {},
 	computed: {
-		...mapGetters(["user", "themeDark", "currentSong", "infoMessage"])
+		...mapGetters(["user", "themeDark", "currentSong"])
 	}
 };
 </script>

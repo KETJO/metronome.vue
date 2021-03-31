@@ -1,12 +1,6 @@
 <template lang="pug">
 .metronome-body 
-	
-	.beats-side
-		.beats-side__content
-			.beat(
-				v-for="(beat, i) in Number(currentSong.beats)",
-				:class="{ sFbeat: i == 0 && currentSong.sFirstBeat }"
-			) 
+	Beats
 	.info
 		.saveUpdate.pointer(v-if="user.length > 0")
 			.saveUpdate__btn(@click="updateSong") update song
@@ -33,7 +27,7 @@
 		.down.arrow.blockSelect.pointer.neuro-outpressed(
 			@mousedown="changeBpm('down')"
 		) <
-		span.blockSelect(@click="bpmShowModal = !bpmShowModal", ref="bpm") {{ currentSong.bpm }} bpm
+		span.blockSelect.pointer(@click="bpmShowModal = !bpmShowModal", ref="bpm") {{ currentSong.bpm }} bpm
 		.bpmModal(v-show="bpmShowModal") 
 			.bpmModal__content 
 				.bpmModalInfo.textGlow 
@@ -60,9 +54,12 @@
 <script>
 import { mapMutations, mapGetters } from "vuex";
 import controls from "../mixins/controls";
-
+import Beats from "../components/Beats"
 export default {
 	mixins: [controls],
+	components: {
+		Beats
+	},
 	data: () => ({
 		song: {
 			bpm: 120
@@ -72,7 +69,12 @@ export default {
 		message: false
 	}),
 	methods: {
-		...mapMutations(["CHANGE_CURRENT_VALS", "UPDATE_SONG", "CHANGE_VOL", "SET_INFO_MESSAGE"]),
+		...mapMutations([
+			"CHANGE_CURRENT_VALS",
+			"UPDATE_SONG",
+			"CHANGE_VOL",
+			"SET_INFO_MESSAGE"
+		]),
 		theming() {
 			this.$refs.bpm.classList.add("textGlow");
 			this.$refs.bpm.style.color = "var(--akcentLight)";
@@ -87,7 +89,7 @@ export default {
 		},
 		updateSong() {
 			const song = this.currentSong;
-			this.SET_INFO_MESSAGE('song updated')
+			this.SET_INFO_MESSAGE("song updated");
 			this.UPDATE_SONG(song);
 		},
 		async save() {
@@ -101,7 +103,7 @@ export default {
 		this.song.bpm = this.currentSong.bpm;
 		this.bpmHistory = [120];
 		this.vol = this.volume;
-		if(this.user) this.save()
+		if (this.user) this.save();
 	},
 	watch: {
 		bpmShowModal() {
@@ -159,32 +161,7 @@ export default {
 		box-shadow: 0px 0px 40px var(--akcentLight)
 		&:hover
 			cursor: pointer
-.beats-side
-	width: 100%
-	height: 100%
-	display: flex
-	justify-content: space-between
-	flex-direction: column
-	&__content
-		display: flex
-		justify-content: space-evenly
-		width: 100%
-		height: 100%
-	.beat
-		background-color: var(--mainGrey)
-		width: 100%
-		height: 100%
-		margin: 0rem .2rem
-		border-radius: 2px
-		position: relative
-		display: flex
-		align-items: baseline
-		justify-content: center
-		&__sfirstMark
-			font-size: 1rem
-			color: var(--akcentLight)
-			height: .3rem
-			border-radius: 10px
+
 .title
 	font-size: 1.5rem
 	color: var(--akcentLight)
@@ -307,9 +284,14 @@ export default {
 			-webkit-appearance: none
 			&:focus
 				box-shadow: 0px 0px 35px var(--akcentLight)
+				-webkit-appearance: none
+		input[type='number']
+			-moz-appearance: textfield
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button
+			-webkit-appearance: none
 		button
 			margin-top: 6rem
 			&:disabled
 				opacity: .3
-
 </style>

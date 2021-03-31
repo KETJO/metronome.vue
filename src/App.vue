@@ -3,7 +3,7 @@
 	RotateScreen
 	Metronome
 	transition(name="fade")
-		.infoMessage(v-show="showInfoMessage") 
+		.infoMessage.boxGlow(v-show="showInfoMessage") 
 			span {{ infoMessage }}
 </template>
 

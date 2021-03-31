@@ -65,11 +65,18 @@ export default {
 		isValid: true
 	}),
 	methods: {
-		...mapMutations(["ADD_SONG", "INCREASE_ID", "LOAD_SONG"]),
+		...mapMutations([
+			"ADD_SONG",
+			"INCREASE_ID",
+			"LOAD_SONG",
+			"SET_INFO_MESSAGE"
+		]),
 		addSong() {
 			this.song.id = uniqid();
 			this.ADD_SONG({ ...this.song });
+			this.LOAD_SONG(this.song);
 			this.$router.push("/");
+			this.SET_INFO_MESSAGE("song added");
 		},
 		goBack() {
 			this.$router.push("/");
@@ -83,7 +90,6 @@ export default {
 			this.markAsPressed(this.song.size, ".add-song__size-item");
 		}, 0);
 		this.bpmHistory = [120];
-		this.song = this.currentSong;
 	}
 };
 </script>
@@ -110,8 +116,8 @@ export default {
 			color: var(--mainGrey)
 			border-radius: 10px
 			font-weight: 800
-	&__nums 
-		display: flex 
+	&__nums
+		display: flex
 		#beatsValue
 			color: var(--akcentLight)
 			margin-left: 1rem
@@ -124,7 +130,7 @@ export default {
 		input[type=number]
 			-moz-appearance: textfield
 	.add-song__nums
-		margin-bottom: .5rem  
+		margin-bottom: .5rem
 	&__bpm-info
 		width: 100%
 		display: flex

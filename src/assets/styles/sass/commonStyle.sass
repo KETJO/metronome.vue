@@ -4,9 +4,9 @@
 	position: absolute 
 	top: 0% 
 	left:0% 
-	padding: 4rem
+	padding: 3rem
 	+MW500
-		padding: 4rem 0rem
+		padding: 3rem 0rem
 	&__content 
 		display: flex 
 		flex-direction: column 
@@ -186,3 +186,30 @@
 		font-size: 1.2rem
 		letter-spacing: .2rem
 		text-transform: uppercase
+
+.beats-side
+	width: 100%
+	height: 100%
+	display: flex
+	justify-content: space-between
+	flex-direction: column
+	&__content
+		display: flex
+		justify-content: space-evenly
+		width: 100%
+		height: 100%
+	.beat
+		background-color: var(--mainGrey)
+		width: 100%
+		height: 100%
+		margin: 0rem .2rem
+		border-radius: 2px
+		position: relative
+		display: flex
+		align-items: baseline
+		justify-content: center
+		&__sfirstMark
+			font-size: 1rem
+			color: var(--akcentLight)
+			height: .3rem
+			border-radius: 10px

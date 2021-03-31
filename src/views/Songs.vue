@@ -24,9 +24,10 @@ export default {
 		...mapGetters(["songs"])
 	},
 	methods: {
-		...mapMutations(["LOAD_SONG"]),
+		...mapMutations(["LOAD_SONG","SET_INFO_MESSAGE"]),
 		loadSong(song) {
 			this.LOAD_SONG(song);
+			this.SET_INFO_MESSAGE('song loaded');
 			this.$router.push("/");
 		}
 	}

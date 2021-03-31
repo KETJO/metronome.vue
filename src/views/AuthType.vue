@@ -1,18 +1,20 @@
 <template lang="pug">
 .authType 
+	.page__title 
+		h2 login with
 	.authType__content 
-		#email.modal-btn(@click="$router.push('/emailAuth')") 
+		#email.pointer.boxGlow(@click="$router.push('/emailAuth')") 
 			img(src="../assets/img/email.png") 
-			span login with email
-		#loginGoogle.modal-btn(@click="googleAuth()")
+			span.textGlow Email
+		#loginGoogle.pointer.boxGlow(@click="googleAuth()")
 			img(src="../assets/img/google.png")
-			span login with google
-		#loginFacebook.modal-btn(@click="facebookAuth()")
+			span.textGlow Google
+		#loginFacebook.pointer.boxGlow(@click="facebookAuth()")
 			img(src="../assets/img/facebook.png")
-			span login with facebook
-		#noAuthorize.modal-btn(@click="$router.push({ path: '/' })")
+			span.textGlow Facebook
+		#noAuthorize.pointer.boxGlow(@click="$router.push({ path: '/' })")
 			img(src="../assets/img/offline.png")
-			span offline version
+			span.textGlow Offline
 </template>
 
 <script>
@@ -62,39 +64,43 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.authType
+	display: flex
+	align-items: center
+	justify-content: center
+	flex-direction: column
 .authType__content
-	width: 100%
-	height: 100%
+	width: 80%
+	margin-top: 4rem
 	display: flex
 	flex-direction: column
-	justify-content: center
+	justify-items: center
 	align-items: center
+	margin-bottom: 2rem
 .page__title
+	width: 100%
 	text-align: right
+	color: var(--akcentLight)
 #loginGoogle, #loginFacebook, #email, #noAuthorize
 	width: 100%
 	display: grid
-	grid-template-columns: 1fr 1fr
-	justify-content: space-between
+	grid-template-columns: 1fr 3fr
+	justify-content: center
 	align-items: center
-	margin-bottom: 2rem
-	padding: 0rem 8rem
+	margin: 1rem 0rem 
+	border-radius: 5px
+	border: solid 2px var(--akcentLight)
+	padding: 1rem 0rem
 	img
-		width: 3rem
-		height: 3rem
-		justify-self: center
-	span
-		justify-self: start
-		font-size: 1.3rem
-		text-transform: uppercase
-		font-weight: 800
-		text-align: center
+		width: 4rem
+		height: 4rem
+		justify-self: end
+	span 
+		font-size: 1.5rem 
 		color: var(--akcentLight)
-#noAuthorize
-	width: 100%
-	color: var(--greenCustom)
-	button
-		width: 100%
-		text-transform: uppercase
-		font-size: 1.2rem
+		font-weight: 800
+		margin-left: 1rem
+		text-align: center
+		letter-spacing: .1rem
+
 </style>
