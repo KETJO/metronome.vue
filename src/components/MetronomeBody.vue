@@ -8,7 +8,7 @@
 		.title.textGlow.pointer(v-if="user.length > 0")
 			h2(@click="$router.push({ name: 'Songs' })") {{ currentSong.author }} - {{ currentSong.title }}
 		.info-offline(v-else)
-			router-link(to="/auth") 
+			router-link(to="/authType") 
 				h2 offline mode
 
 	.volume 
@@ -18,8 +18,8 @@
 				input#volSlider(
 					type="range",
 					v-model="vol",
-					min="0",
-					max="100",
+					min="-50",
+					max="10",
 					step="1",
 					@input="changeVol"
 				)

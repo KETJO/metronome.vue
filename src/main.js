@@ -6,6 +6,7 @@ import RoundSlider from 'vue-round-slider'
 import firebase from 'firebase/app'
 import Vuelidate from 'vuelidate'
 
+
 import 'firebase/auth'
 import 'firebase/database'
 import './registerServiceWorker'
@@ -28,6 +29,7 @@ firebase.initializeApp({
 new Vue({
   router,
   store,
+
   render: h => h(App)
   }).$mount('#app')
 

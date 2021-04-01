@@ -1,73 +1,71 @@
-const audioWorker = new Worker("../audioworker.js");
+/* eslint-disable */
+import * as Tone from 'tone'
+
 const metronomeHandler = {
 	data:()=>({
 		beatCounter: 0,
-
-		expected: 0,
-		timeInterval: 0,
-		sizeCoeficient: 1,
-		timeOut: {},
-		drift: 0,
+		vol: null,
+		sndHigh: null,
+		sndLow: null,
 	}),
 	computed: {
-		
-	},
-	mounted() {
-		audioWorker.onmessage = e=> {
-			if (e.data == "tick") {
-				console.log("tick!");
-				this.totalStart()
-			}
-			else{
-				console.log("message: " + e.data);
-			}
+		curVals(){
+			return this.currentSong
 		}
 	},
-	methods: {
-		playStop(){
-			this.isPlay=!this.isPlay;
-			if(this.isPlay) this.start();
-			else this.stop();
-		},
-		updateSizeCoeficent(){
-			const size = Number(this.curVals.size);
-			switch(size) {
-				case(2): 
-					this.sizeCoeficient=0.5
+	mounted() {
+		this.setSound()
+		Tone.Transport.bpm.value = this.curVals.bpm;
+
+		const loop = new Tone.Loop(time => {
+			if(this.beatCounter==this.curVals.beats) this.beatCounter=0;
+			if(this.beatCounter==0&&this.curVals.sFirstBeat) this.sndHigh.start(time)
+			else this.sndLow.start(time)
+			Tone.Draw.schedule(() => {
+				this.visualStart('beat')
+				this.visualStart('hBeat')
+				this.beatCounter++
+			}, time);
+		}, `${this.curVals.size}n`).start(0);
+
+		
+		this.$store.subscribe(mutation=>{
+			switch(mutation.type){
+				case 'CHANGE_CURRENT_VALS': 
+					Tone.Transport.bpm.value = this.curVals.bpm;
+					loop.interval=this.curVals.size+'n';
 					break
-				case(4): 
-					this.sizeCoeficient=1
+				case 'CHANGE_SETTED_SOUND': 
+					this.setSound()
 					break
-				case(8): 
-					this.sizeCoeficient=2
-					break
-				case(16): 
-					this.sizeCoeficient=4
+				case 'CHANGE_VOL': 
+					console.log(this.volume);
+					this.vol.volume.value = this.volume;
 					break
 			}
+		})
+	},
+	methods: {
+		async playStop(){
+			this.isPlay=!this.isPlay;
+			if(this.isPlay) {
+				await Tone.start();
+				Tone.Transport.start()
+			}
+			else {
+				Tone.Transport.stop()
+				this.visualStop('beat')
+				this.visualStop('hBeat')
+				this.beatCounter=0;
+			}
 		},
-		start(){
-			this.updateSizeCoeficent();
-			this.timeInterval = 60/this.curVals.bpm*1000/this.sizeCoeficient; 
-			audioWorker.postMessage({"interval":this.timeInterval});
-			audioWorker.postMessage("start");
-		},
-		totalStart(){
-			if(this.beatCounter==this.curVals.beats) this.beatCounter=0;
-			this.visualStart('beat')
-			this.visualStart('hBeat')
-			this.soundStart()
-			this.beatCounter++
-		},
-		stop(){
-			audioWorker.postMessage("stop");
-			this.visualStop('beat')
-			this.visualStop('hBeat')
-			this.beatCounter=0
-		},
-		soundStart(){
-			if(this.beatCounter==0&&this.curVals.sFirstBeat) this.sound.high.play()
-			else this.sound.low.play()
+		setSound(){
+			console.log(this.volume);
+			this.vol=new Tone.Volume(this.volume).toDestination();
+			this.sndHigh = new Tone.Player(`../media/sounds/${this.settedSound}/1.mp3`).connect(this.vol)
+			
+			this.sndLow = new Tone.Player(`../media/sounds/${this.settedSound}/0.mp3`).connect(this.vol)
+			
 		},
 		visualStart(clsName){
 			const beats = document.querySelectorAll(`.${clsName}`)
@@ -80,11 +78,14 @@ const metronomeHandler = {
 			else beat.classList.add('beatGlow')
 		},
 		visualStop(clsName){
-			const beats = document.querySelectorAll(`.${clsName}`)
-			beats.forEach(beat=>{
+			setTimeout(() => {
+				const beats = document.querySelectorAll(`.${clsName}`)
+				beats.forEach(beat=>{
 				beat.classList.remove('beatGlow')
 				beat.classList.remove('sfbGlow')
 			})
+			}, 100);
+			
 		}
 	},
 }

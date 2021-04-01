@@ -3,16 +3,16 @@
 	.page__title 
 		h2 login with
 	.authType__content 
-		#email.pointer.boxGlow(@click="$router.push('/emailAuth')") 
+		#email.pointer(@click="$router.push('/emailAuth')") 
 			img(src="../assets/img/email.png") 
 			span.textGlow Email
-		#loginGoogle.pointer.boxGlow(@click="googleAuth()")
+		#loginGoogle.pointer(@click="googleAuth()")
 			img(src="../assets/img/google.png")
 			span.textGlow Google
-		#loginFacebook.pointer.boxGlow(@click="facebookAuth()")
+		#loginFacebook.pointer(@click="facebookAuth()")
 			img(src="../assets/img/facebook.png")
 			span.textGlow Facebook
-		#noAuthorize.pointer.boxGlow(@click="$router.push({ path: '/' })")
+		#noAuthorize.pointer(@click="offline()")
 			img(src="../assets/img/offline.png")
 			span.textGlow Offline
 </template>
@@ -25,7 +25,12 @@ export default {
 	computed: {},
 	methods: {
 		...mapActions(["getData", "accessAllowed"]),
-		...mapMutations(["SET_USER_NAME", "SET_NEW_STATE", "SET_INFO_MESSAGE"]),
+		...mapMutations([
+			"SET_USER_NAME",
+			"SET_NEW_STATE",
+			"SET_INFO_MESSAGE",
+			"LOAD_SONG"
+		]),
 
 		async logInWithProvider(provider) {
 			const result = await firebase.auth().signInWithPopup(provider);
@@ -58,6 +63,9 @@ export default {
 				this.SET_INFO_MESSAGE(e.message);
 				console.log("failed to access with Facebook", e.message);
 			}
+		},
+		offline() {
+			this.$router.push({ path: "/" });
 		}
 	}
 };
@@ -87,7 +95,7 @@ export default {
 	grid-template-columns: 1fr 3fr
 	justify-content: center
 	align-items: center
-	margin: 1rem 0rem 
+	margin: 1rem 0rem
 	border-radius: 5px
 	border: solid 2px var(--akcentLight)
 	padding: 1rem 0rem
@@ -95,12 +103,11 @@ export default {
 		width: 4rem
 		height: 4rem
 		justify-self: end
-	span 
-		font-size: 1.5rem 
+	span
+		font-size: 1.5rem
 		color: var(--akcentLight)
 		font-weight: 800
 		margin-left: 1rem
 		text-align: center
 		letter-spacing: .1rem
-
 </style>

@@ -10,7 +10,7 @@ export default new Vuex.Store({
     metronomeData: {
       constData: {
         sizesRange: [2, 4, 8, 16],
-        allSounds: ["rim-shot", "hi-hat", "rim-shot2", "hi-hat2"],
+        allSounds: ["click", "hi-hat", "rim-shot", "hi-hat2"],
       },
 
       info: {
@@ -20,18 +20,18 @@ export default new Vuex.Store({
 
       lastCurrSett: {
         themeDark: true,
-        volume: 80,
-        settedSound: 'rim-shot',
+        volume: '0',
+        settedSound: 'click',
       },
 
       currentSong: {
-        id: "2cccccccc",
-        author: "RadioHead",
-        title: "Creep",
-        bpm: 92,
-        beats: "4",
-        size: "4",
-        sFirstBeat: true
+        id: "0aaaaaaaa",
+				author: "Limp Bizkit",
+				title: "Behind Blie Eyes",
+				bpm: 120,
+				beats: "4",
+				size: "4",
+				sFirstBeat: true
       },
 
       songs: 
@@ -40,6 +40,15 @@ export default new Vuex.Store({
           author: "Nirvana",
           title: "Smels like teen spirit",
           bpm: 116,
+          beats: "4",
+          size: "4",
+          sFirstBeat: true
+        },
+        {
+          id: "0aaaaaaaa",
+          author: "Limp Bizkit",
+          title: "Behind Blie Eyes",
+          bpm: 120,
           beats: "4",
           size: "4",
           sFirstBeat: true

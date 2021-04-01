@@ -23,7 +23,7 @@
 				h3#beatsValue.boxGlow {{ song.beats }}
 			input(type="range", min="1", max="16", step="1", v-model="song.beats") 
 		.add-song__size 
-			h3 size
+			h3 resolution
 			.add-song__size-content
 				.add-song__size-item.neuro-outpressed(v-for="s in sizesRange")
 					label(for="size", @click="markAsPressed(s, '.add-song__size-item')") {{ s }}

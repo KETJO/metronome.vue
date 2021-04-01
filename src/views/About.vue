@@ -7,12 +7,16 @@
 	.page__content.about__content
 		p#version Current version 1.1
 
-		p Hi, there! My name is
-			a(href="https://www.facebook.com/erlan.zharkeev/") Erlan Zharkeev
+		p Hi, there! 
+		p My name is
+			a(href="https://www.facebook.com/erlan.zharkeev/")  Erlan Zharkeev
 		p I created this project for my education in VUE.js.
 		p If you like this app or maybe you have any suggestions for improvement please contact me:
-			a(href="mailto:zharkeev.post@gmail.com") zharkeev.post@gmail.com
+			a(href="mailto:zharkeev.post@gmail.com")  zharkeev.post@gmail.com
+		p In this metronome i used 
+			a(href="https://tonejs.github.io/") TONE.js
 		a#github(href="https://github.com/KETJO/metronome.vue") https://github.com/KETJO/metronome.vue
+		
 </template>
 
 <script>
@@ -35,17 +39,18 @@ export default {};
 			font-size: 4rem
 			color: var(--akcentLight)
 	&__content
+		width: 100%
 		font-weight: 800
 		display: flex
 		align-items: flex-end
 		justify-content: center
 		p
-			font-size: 2rem
+			font-size: 1.7rem
 			line-height: 4rem
 		a
 			color: var(--akcentLight)
-			margin-left: .5rem
+			font-size: 1.6rem
 	#github
 		margin-top: 4rem
-		font-size: 1.5rem
+		font-size: 1.2rem
 </style>

@@ -15,7 +15,6 @@
 <script>
 import controls from "../mixins/controls";
 import measure from "../mixins/measure";
-import { Howl } from "howler";
 
 import { mapGetters, mapMutations } from "vuex";
 
@@ -38,10 +37,10 @@ export default {
 		instrumentName() {
 			let insName = "rim-shot";
 			switch (this.settedSound) {
-				case "rim-shot":
+				case "click":
 					insName = "click";
 					break;
-				case "rim-shot2":
+				case "rim-shot":
 					insName = "rim-shot";
 					break;
 				case "hi-hat":
@@ -61,26 +60,7 @@ export default {
 				this.soundChangeIndex = -1;
 			this.soundChangeIndex++;
 			this.CHANGE_SETTED_SOUND(this.allSounds[this.soundChangeIndex]);
-			this.updateSound();
 		},
-		updateSound() {
-			// this.sound.high = new Howl({
-			// 	src: [`/metronome/media/sounds/${this.settedSound}/1.mp3`],
-			// 	volume: this.volume / 100
-			// });
-			// this.sound.low = new Howl({
-			// 	src: [`/metronome/media/sounds/${this.settedSound}/0.mp3`],
-			// 	volume: this.volume / 100
-			// });
-			this.sound.high = new Howl({
-				src: [`../media/sounds/${this.settedSound}/1.mp3`],
-				volume: this.volume / 100
-			});
-			this.sound.low = new Howl({
-				src: [`../media/sounds/${this.settedSound}/0.mp3`],
-				volume: this.volume / 100
-			});
-		}
 	},
 	watch: {
 		tapBpm() {
@@ -88,14 +68,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.updateSound();
-		this.$store.subscribe(mutation => {
-			if (mutation.type == "CHANGE_VOL") this.updateSound();
-		});
 		this.soundChangeIndex = this.allSounds.indexOf(this.settedSound);
-	},
-	beforeDestroy() {
-		this.timerStop();
 	}
 };
 </script>

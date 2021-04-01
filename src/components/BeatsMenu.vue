@@ -10,7 +10,7 @@ transition(name="fade")
 				input(type="range", min="1", max="16", step="1", v-model="beats") 
 		.beats-menu__size
 			.beats-menu__size-title
-				h2 size
+				h2 resulution
 			.beats-menu__size-content 
 				.beats-menu__size-item.neuro-outpressed(v-for="s in sizesRange")
 					label(for="size", @click="markAsPressed(s, '.beats-menu__size-item')") {{ s }}
@@ -81,7 +81,7 @@ export default {
 	&__beats, .beats-menu__size, .beats-menu__stress
 		width: 100%
 	&__beats-title, .beats-menu__size-title, .beats-menu__stress-title
-		font-size: 2rem
+		font-size: 1.7rem
 		text-transform: uppercase
 		font-weight: 800
 		margin: 2rem 0rem
