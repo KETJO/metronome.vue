@@ -1,5 +1,7 @@
 <template lang="pug">
 #app
+	transition(name="fade")
+		Preloader(v-show="!isLoaded")
 	RotateScreen
 	Metronome
 	transition(name="fade")
@@ -8,6 +10,7 @@
 </template>
 
 <script>
+import Preloader from "./components/Preloader";
 import RotateScreen from "./views/RotateScreen";
 import Metronome from "./components/Metronome";
 import firebase from "firebase/app";
@@ -16,16 +19,14 @@ export default {
 	name: "App",
 	components: {
 		RotateScreen,
-		Metronome
+		Metronome,
+		Preloader
 	},
 	data: () => ({
 		isAuth: false,
-		mutationsTypes: [
-			"UPDATE_SONG",
-			"CHANGE_THEME",
-			"CHANGE_SETTED_SOUND"
-		],
-		showInfoMessage: false
+		mutationsTypes: ["UPDATE_SONG", "CHANGE_THEME", "CHANGE_SETTED_SOUND"],
+		showInfoMessage: false,
+		isLoaded: false
 	}),
 
 	methods: {
@@ -59,6 +60,10 @@ export default {
 			});
 			if (mutation.type === "SET_INFO_MESSAGE") this.message();
 		});
+		//
+		setTimeout(() => {
+			this.isLoaded = true;
+		}, 1500);
 	}
 };
 </script>
@@ -89,7 +94,7 @@ export default {
 		padding: 2rem
 		font-weight: 800
 		text-transform: uppercase
-		width: 100% 
+		width: 100%
 		text-align: center
 		line-height: 1.5rem
 </style>

@@ -1,5 +1,7 @@
 <template lang="pug">
 .songs
+	transition(name="fade")
+		PreloaderSongs(v-show="!isLoaded")
 	router-link(to="/") 
 		.back-arrow.textGlow &#8592;
 	.page__content
@@ -9,7 +11,7 @@
 			)(
 				v-for="song in songs"
 			) 
-				.song__title {{ song.title }} - {{ song.author }}  
+				.song__title {{ song.title }} - {{ song.author }}
 				.song__bpm {{ song.bpm }}
 				.song__beat {{ song.beats }} / {{ song.size }}
 				.song__load.textGlow(@click.prevent="loadSong(song)") load
@@ -17,19 +19,30 @@
 			router-link(to="/AddSong") Create New Song
 </template>
 <script>
+//import Preloader from "vuex";
 import { mapGetters, mapMutations } from "vuex";
 export default {
-	data: () => ({}),
+	components: {
+		PreloaderSongs: () => import('../components/Preloader')
+	},
+	data: () => ({
+		isLoaded: false
+	}),
 	computed: {
 		...mapGetters(["songs"])
 	},
 	methods: {
-		...mapMutations(["LOAD_SONG","SET_INFO_MESSAGE"]),
+		...mapMutations(["LOAD_SONG", "SET_INFO_MESSAGE"]),
 		loadSong(song) {
 			this.LOAD_SONG(song);
-			this.SET_INFO_MESSAGE('song loaded');
+			this.SET_INFO_MESSAGE("song loaded");
 			this.$router.push("/");
 		}
+	},
+	mounted() {
+		setTimeout(() => {
+			this.isLoaded = true;
+		}, 1500);
 	}
 };
 </script>

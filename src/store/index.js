@@ -26,7 +26,7 @@ export default new Vuex.Store({
 
       currentSong: {
         id: "0aaaaaaaa",
-        author: "Panter",
+        author: "Pantera",
         title: "Walk",
         bpm: 120,
         beats: "4",
