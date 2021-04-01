@@ -46,9 +46,6 @@ export default {
 				case "hi-hat":
 					insName = "hi-hat";
 					break;
-				case "hi-hat2":
-					insName = "hi-hat 2";
-					break;
 			}
 			return insName;
 		}

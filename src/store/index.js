@@ -10,7 +10,7 @@ export default new Vuex.Store({
     metronomeData: {
       constData: {
         sizesRange: [2, 4, 8, 16],
-        allSounds: ["click", "hi-hat", "rim-shot", "hi-hat2"],
+        allSounds: ["click", "rim-shot", "hi-hat"]
       },
 
       info: {
@@ -26,12 +26,12 @@ export default new Vuex.Store({
 
       currentSong: {
         id: "0aaaaaaaa",
-				author: "Limp Bizkit",
-				title: "Behind Blie Eyes",
-				bpm: 120,
-				beats: "4",
-				size: "4",
-				sFirstBeat: true
+        author: "Panter",
+        title: "Walk",
+        bpm: 120,
+        beats: "4",
+        size: "4",
+        sFirstBeat: true
       },
 
       songs: 
@@ -46,8 +46,8 @@ export default new Vuex.Store({
         },
         {
           id: "0aaaaaaaa",
-          author: "Limp Bizkit",
-          title: "Behind Blie Eyes",
+          author: "Panter",
+          title: "Walk",
           bpm: 120,
           beats: "4",
           size: "4",

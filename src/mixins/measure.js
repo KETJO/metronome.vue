@@ -60,7 +60,6 @@ const metronomeHandler = {
 			}
 		},
 		setSound(){
-			console.log(this.volume);
 			this.vol=new Tone.Volume(this.volume).toDestination();
 			this.sndHigh = new Tone.Player(`../media/sounds/${this.settedSound}/1.mp3`).connect(this.vol)
 			

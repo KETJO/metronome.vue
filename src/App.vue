@@ -85,10 +85,11 @@ export default {
 	align-items: center
 	span
 		color: var(--akcentLight)
-		font-size: 2rem
+		font-size: 1.5rem
 		padding: 2rem
 		font-weight: 800
 		text-transform: uppercase
 		width: 100% 
 		text-align: center
+		line-height: 1.5rem
 </style>
