@@ -42,7 +42,7 @@
 		round-slider(
 			v-model="song.bpm",
 			:min="20",
-			:max="380",
+			:max="220",
 			line-cap="round",
 			radius="105",
 			:update="theming",
@@ -64,7 +64,7 @@ export default {
 		song: {
 			bpm: 120
 		},
-		vol: 80,
+		vol: '0',
 		bpmShowModal: false,
 		message: false
 	}),
@@ -193,11 +193,9 @@ export default {
 	justify-content: center
 	align-items: flex-end
 	h2
-		font-size: 1.5rem
+		font-size: 2.5rem
 		color: var(--akcentLight)
 		text-transform: uppercase
-		font-weight: 800
-		letter-spacing: .2rem
 .saveUpdate
 	display: flex
 	align-items: center

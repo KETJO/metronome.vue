@@ -3,18 +3,18 @@
 	.page__title 
 		h2 login with
 	.authType__content 
-		#email.pointer(@click="$router.push('/emailAuth')") 
+		#email.pointer.neuro-outpressed(@click="$router.push('/emailAuth')") 
 			img(src="../assets/img/email.png") 
-			span.textGlow Email
-		#loginGoogle.pointer(@click="googleAuth()")
+			span Email
+		#loginGoogle.pointer.neuro-outpressed(@click="googleAuth()")
 			img(src="../assets/img/google.png")
-			span.textGlow Google
-		#loginFacebook.pointer(@click="facebookAuth()")
+			span Google
+		#loginFacebook.pointer.neuro-outpressed(@click="facebookAuth()")
 			img(src="../assets/img/facebook.png")
-			span.textGlow Facebook
-		#noAuthorize.pointer(@click="offline()")
+			span Facebook
+		#noAuthorize.pointer.neuro-outpressed(@click="offline()")
 			img(src="../assets/img/offline.png")
-			span.textGlow Offline
+			span Offline
 </template>
 
 <script>
@@ -88,7 +88,7 @@ export default {
 .page__title
 	width: 100%
 	text-align: right
-	color: var(--akcentLight)
+	color: var(--mainGrey)
 #loginGoogle, #loginFacebook, #email, #noAuthorize
 	width: 100%
 	display: grid
@@ -97,17 +97,20 @@ export default {
 	align-items: center
 	margin: 1rem 0rem
 	border-radius: 5px
-	border: solid 2px var(--akcentLight)
-	padding: 1rem 0rem
+	//border: solid 2px var(--akcentLight)
+	padding: 2rem 0rem
 	img
 		width: 4rem
 		height: 4rem
 		justify-self: end
 	span
-		font-size: 1.5rem
+		font-size: 1.8rem
+		text-transform: uppercase
 		color: var(--akcentLight)
-		font-weight: 800
 		margin-left: 1rem
 		text-align: center
-		letter-spacing: .1rem
+		font-weight: 800
+#noAuthorize
+	span 
+		color: var(--mainGrey)
 </style>

@@ -14,12 +14,12 @@
 </template>
 <script>
 import controls from "../mixins/controls";
-import measure from "../mixins/measure";
+import playStopHandler from "../mixins/playStopHandler";
 
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
-	mixins: [controls, measure],
+	mixins: [controls, playStopHandler],
 	data: () => ({
 		isPlay: false,
 		tapBpm: null,

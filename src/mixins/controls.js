@@ -10,8 +10,8 @@ const controls = {
 			if (str.match(/^\d+$/) || str === "") {
 				if (this.song.bpm < 20) {
 					this.$refs.infoModal.textContent = "min value 20";
-				} else if (this.song.bpm > 380) {
-					this.$refs.infoModal.textContent = "max value 380";
+				} else if (this.song.bpm > 220) {
+					this.$refs.infoModal.textContent = "max value 220";
 					this.song.bpm = this.bpmHistory[this.bpmHistory.length - 1];
 				} else {
 					this.$refs.infoModal.textContent = "";
