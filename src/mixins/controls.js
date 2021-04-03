@@ -10,8 +10,8 @@ const controls = {
 			if (str.match(/^\d+$/) || str === "") {
 				if (this.song.bpm < 20) {
 					this.$refs.infoModal.textContent = "min value 20";
-				} else if (this.song.bpm > 220) {
-					this.$refs.infoModal.textContent = "max value 220";
+				} else if (this.song.bpm > 300) {
+					this.$refs.infoModal.textContent = "max value 300";
 					this.song.bpm = this.bpmHistory[this.bpmHistory.length - 1];
 				} else {
 					this.$refs.infoModal.textContent = "";
@@ -36,7 +36,7 @@ const controls = {
 		},
 		changeBpm(direction) {
 			this.clickOut(`.${direction}`);
-			if (direction === "up" && this.song.bpm < 380) this.song.bpm++;
+			if (direction === "up" && this.song.bpm < 300) this.song.bpm++;
 			else this.song.bpm--;
 		},
 		tap(clName) {
@@ -47,14 +47,14 @@ const controls = {
 				const dif = this.taps[this.taps.length-1]-this.taps[0];
 				const interval = (dif/this.taps.length)/100;
 				let result = Math.floor(60/interval);
-				if(result>=380) result = 380;
+				if(result>=300) result = 300;
 				this.tapBpm = result;
 			} 
 			if(this.isFirstTap) {
 				setTimeout(() => {
 					this.isFirstTap=true;
 					this.taps=[];
-				}, 5000);
+				}, 8000);
 			}
 			this.isFirstTap=false;
 		},

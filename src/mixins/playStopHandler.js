@@ -1,8 +1,10 @@
 /* eslint-disable */
+
 import * as Tone from 'tone'
 
 const metronomeHandler = {
 	data:()=>({
+		loop: {},
 		beatCounter: 0,
 		vol: null,
 		sounds: {
@@ -15,7 +17,7 @@ const metronomeHandler = {
 				low:null
 			},
 			rimShot:{
-				hight:null,
+				high:null,
 				low:null
 			} 
 		},
@@ -31,23 +33,25 @@ const metronomeHandler = {
 		this.loadSound()
 		this.setSound()
 		Tone.Transport.bpm.value = this.curVals.bpm;
-
-		const loop = new Tone.Loop(time => {
-			if(this.beatCounter==this.curVals.beats) this.beatCounter=0;
-			if(this.beatCounter==0&&this.curVals.sFirstBeat) this.sndHigh.start(time)
-			else this.sndLow.start(time)
-			Tone.Draw.schedule(() => {
-				this.visualStart('beat')
-				this.visualStart('hBeat')
-				this.beatCounter++
-			}, time);
-		}, `${this.curVals.size}n`).start(0);
+		//this.createLoop();
+		// this.loop = new Tone.Loop(time => {
+		// 	if(this.beatCounter==this.curVals.beats) this.beatCounter=0;
+		// 	if(this.beatCounter==0&&this.curVals.sFirstBeat) this.sndHigh.start(time)
+		// 	else this.sndLow.start(time)
+		// 	Tone.Draw.schedule(() => {
+		// 		this.visualStart('beat')
+		// 		this.visualStart('hBeat')
+		// 		this.beatCounter++
+		// 	}, time);
+		// }, `${this.curVals.size}n`).start(0);
 
 		this.$store.subscribe(mutation=>{
 			switch(mutation.type){
+				case 'CHANGE_CURRENT_BPM':
+					Tone.Transport.bpm.value = this.curVals.bpm;
 				case 'CHANGE_CURRENT_VALS': 
 					Tone.Transport.bpm.value = this.curVals.bpm;
-					loop.interval=this.curVals.size+'n';
+					this.loop.interval=this.curVals.size+'n';
 					break
 				case 'CHANGE_SETTED_SOUND': 
 					this.setSound()
@@ -59,10 +63,24 @@ const metronomeHandler = {
 		})
 	},
 	methods: {
+		createLoop(){
+			this.loop = new Tone.Loop(time => {
+				if(this.beatCounter==this.curVals.beats) this.beatCounter=0;
+				if(this.beatCounter==0&&this.curVals.sFirstBeat) this.sndHigh.start(time)
+				else this.sndLow.start(time)
+				Tone.Draw.schedule(() => {
+					this.visualStart('beat')
+					this.visualStart('hBeat')
+					this.beatCounter++
+				}, time);
+			}, `${this.curVals.size}n`).start(0);
+		},
 		async playStop(){
 			this.isPlay=!this.isPlay;
 			if(this.isPlay) {
+				this.createLoop();
 				await Tone.start();
+				this.setSound()
 				Tone.Transport.start()
 			}
 			else {
@@ -70,29 +88,32 @@ const metronomeHandler = {
 				this.visualStop('beat')
 				this.visualStop('hBeat')
 				this.beatCounter=0;
+				this.setSound();
+				this.loop.dispose()
 			}
 		},
 		loadSound(){
-			// this.sounds.click.high = new Tone.Player(`/metronome/media/sounds/click/1.mp3`)
-			// this.sounds.click.low = new Tone.Player(`/metronome/media/sounds/click/0.mp3`)
+			this.vol=new Tone.Volume(this.volume).toDestination();
 
-			// this.sounds.hiHat.high = new Tone.Player(`/metronome/media/sounds/hi-hat/1.mp3`)
-			// this.sounds.hiHat.low = new Tone.Player(`/metronome/media/sounds/hi-hat/0.mp3`)
+			this.sounds.click.high = new Tone.Player(`/metronome/media/sounds/click/1.mp3`).connect(this.vol)
+			this.sounds.click.low = new Tone.Player(`/metronome/media/sounds/click/0.mp3`).connect(this.vol)
 
-			// this.sounds.rimShot.high = new Tone.Player(`/metronome/media/sounds/rim-shot/1.mp3`)
-			// this.sounds.rimShot.low = new Tone.Player(`/metronome/media/sounds/rim-shot/0.mp3`)
+			this.sounds.hiHat.high = new Tone.Player(`/metronome/media/sounds/hi-hat/1.mp3`).connect(this.vol)
+			this.sounds.hiHat.low = new Tone.Player(`/metronome/media/sounds/hi-hat/0.mp3`).connect(this.vol)
 
-			this.sounds.click.high = new Tone.Player(`../media/sounds/click/1.mp3`)
-			this.sounds.click.low = new Tone.Player(`../media/sounds/click/0.mp3`)
+			this.sounds.rimShot.high = new Tone.Player(`/metronome/media/sounds/rim-shot/1.mp3`).connect(this.vol)
+			this.sounds.rimShot.low = new Tone.Player(`/metronome/media/sounds/rim-shot/0.mp3`).connect(this.vol)
 
-			this.sounds.hiHat.high = new Tone.Player(`../media/sounds/hi-hat/1.mp3`)
-			this.sounds.hiHat.low = new Tone.Player(`../media/sounds/hi-hat/0.mp3`)
+			// this.sounds.click.high = new Tone.Player(`../media/sounds/click/1.mp3`).connect(this.vol)
+			// this.sounds.click.low = new Tone.Player(`../media/sounds/click/0.mp3`).connect(this.vol)
 
-			this.sounds.rimShot.high = new Tone.Player(`../media/sounds/rim-shot/1.mp3`)
-			this.sounds.rimShot.low = new Tone.Player(`../media/sounds/rim-shot/0.mp3`)
+			// this.sounds.hiHat.high = new Tone.Player(`../media/sounds/hi-hat/1.mp3`).connect(this.vol)
+			// this.sounds.hiHat.low = new Tone.Player(`../media/sounds/hi-hat/0.mp3`).connect(this.vol)
+
+			// this.sounds.rimShot.high = new Tone.Player(`../media/sounds/rim-shot/1.mp3`).connect(this.vol)
+			// this.sounds.rimShot.low = new Tone.Player(`../media/sounds/rim-shot/0.mp3`).connect(this.vol)
 		},
 		setSound(){
-			this.vol=new Tone.Volume(this.volume).toDestination();
 			switch(this.settedSound){
 				case'click':
 					this.sndHigh=this.sounds.click.high
@@ -107,8 +128,6 @@ const metronomeHandler = {
 					this.sndLow=this.sounds.rimShot.low
 					break
 			}
-			this.sndHigh.connect(this.vol)
-			this.sndLow.connect(this.vol)
 		},
 		visualStart(clsName){
 			const beats = document.querySelectorAll(`.${clsName}`)
@@ -118,7 +137,7 @@ const metronomeHandler = {
 				beat.classList.remove('sfbGlow')
 			})
 			if(beat&&beat.classList.contains('sFbeat')) beat.classList.add('sfbGlow') 
-			else beat.classList.add('beatGlow')
+			else if(beat) beat.classList.add('beatGlow')
 		},
 		visualStop(clsName){
 			setTimeout(() => {
@@ -128,7 +147,6 @@ const metronomeHandler = {
 				beat.classList.remove('sfbGlow')
 			})
 			}, 100);
-			
 		}
 	},
 }

@@ -30,7 +30,7 @@
 <script>
 /* eslint-disable */
 import { required, email, minLength } from "vuelidate/lib/validators";
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapGetters } from "vuex";
 import firebase from "firebase/app";
 export default {
 	mixin: [],
@@ -40,6 +40,9 @@ export default {
 			password: ""
 		}
 	}),
+	computed: {
+		...mapGetters(["lastSong"])
+	},
 	methods: {
 		...mapActions(["getData", "accessAllowed"]),
 		...mapMutations(["SET_NEW_STATE", "SET_INFO_MESSAGE"]),
@@ -60,9 +63,10 @@ export default {
 					.database()
 					.ref(`/users/${uid}/`)
 					.on("value", snap => {
-						const data = snap.val().metronomeData;
+						const data = snap.val();
 						this.SET_NEW_STATE(data);
 					});
+				this.LOAD_SONG(this.lastSong);
 				this.accessAllowed("loged in with Email");
 			} catch (e) {
 				this.SET_INFO_MESSAGE(e.message);
@@ -85,4 +89,7 @@ export default {
 };
 </script>
 <style lang="sass" scoped>
+.auth
+	h2
+		right: 0rem
 </style>

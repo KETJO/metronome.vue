@@ -22,12 +22,13 @@ export default new Vuex.Store({
         themeDark: true,
         volume: '0',
         settedSound: 'click',
+        lastSong: null
       },
 
       currentSong: {
         id: "0aaaaaaaa",
-        author: "Pantera",
-        title: "Walk",
+        author: "Unknown",
+        title: "Exapmle",
         bpm: 120,
         beats: "4",
         size: "4",
@@ -46,7 +47,7 @@ export default new Vuex.Store({
         },
         {
           id: "0aaaaaaaa",
-          author: "Panter",
+          author: "Pantera",
           title: "Walk",
           bpm: 120,
           beats: "4",
@@ -77,7 +78,7 @@ export default new Vuex.Store({
     volume: state=>state.metronomeData.lastCurrSett.volume,
     settedSound: state=>state.metronomeData.lastCurrSett.settedSound,
     //other
-    defaultSong: state=>state.metronomeData.defaultSong,
+    lastSong: state=>state.metronomeData.lastCurrSett.lastSong,
     currentSong: state=>state.metronomeData.currentSong,
     songs: state=>state.metronomeData.songs,
   },
@@ -97,7 +98,7 @@ export default new Vuex.Store({
     CHANGE_THEME(state){
       state.metronomeData.lastCurrSett.themeDark = !state.metronomeData.lastCurrSett.themeDark;
     },
-    UPDATE_THEME(state){
+    UPDATE_THEME(state, isDark){
       const html = document.documentElement;
       if(state.metronomeData.lastCurrSett.themeDark) html.removeAttribute('data-theme')
       else html.setAttribute('data-theme', 'light')
@@ -122,6 +123,9 @@ export default new Vuex.Store({
         if(s.id==song.id) state.metronomeData.songs.splice(i,1,song)
       });
     },
+    SAVE_LAST_SONG(state, song){
+      state.metronomeData.lastCurrSett.lastSong=song;
+    },
     DELETE_SONG(state, song){
       state.metronomeData.songs.forEach((s,i)=>{
         if(s.id==song.id) state.metronomeData.songs.splice(i,1)
@@ -138,8 +142,6 @@ export default new Vuex.Store({
       //localSave
       const uid = await dispatch('getUid');
 			localStorage.setItem("uid", JSON.stringify(uid));
-      //theme update
-      commit('UPDATE_THEME')
       //go to
 			router.push({
 				name: "Main",

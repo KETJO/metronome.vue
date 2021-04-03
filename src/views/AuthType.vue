@@ -23,8 +23,11 @@ import { mapMutations, mapActions } from "vuex";
 /* eslint-disable */
 export default {
 	computed: {},
+	mounted() {
+		this.logout();
+	},
 	methods: {
-		...mapActions(["getData", "accessAllowed"]),
+		...mapActions(["getData", "accessAllowed", "logout"]),
 		...mapMutations([
 			"SET_USER_NAME",
 			"SET_NEW_STATE",
@@ -42,6 +45,7 @@ export default {
 				.on("value", snap => {
 					const data = snap.val();
 					this.SET_NEW_STATE(data);
+					console.log(data);
 				});
 		},
 		async googleAuth() {
@@ -58,6 +62,7 @@ export default {
 			try {
 				const provider = new firebase.auth.FacebookAuthProvider();
 				await this.logInWithProvider(provider);
+
 				this.accessAllowed("loged in with Facebook");
 			} catch (e) {
 				this.SET_INFO_MESSAGE(e.message);
@@ -97,7 +102,6 @@ export default {
 	align-items: center
 	margin: 1rem 0rem
 	border-radius: 5px
-	//border: solid 2px var(--akcentLight)
 	padding: 2rem 0rem
 	img
 		width: 4rem
@@ -111,6 +115,6 @@ export default {
 		text-align: center
 		font-weight: 800
 #noAuthorize
-	span 
+	span
 		color: var(--mainGrey)
 </style>

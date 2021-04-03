@@ -24,7 +24,7 @@ export default {
 	},
 	data: () => ({
 		isAuth: false,
-		mutationsTypes: ["UPDATE_SONG", "CHANGE_THEME", "CHANGE_SETTED_SOUND"],
+		mutationsTypes: ["UPDATE_SONG", "CHANGE_THEME", "CHANGE_SETTED_SOUND","LOAD_SONG"],
 		showInfoMessage: false,
 		isLoaded: false
 	}),

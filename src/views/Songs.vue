@@ -2,9 +2,9 @@
 .songs
 	transition(name="fade")
 		PreloaderSongs(v-show="!isLoaded")
-	router-link(to="/") 
+	router-link(to="/", v-show="isLoaded") 
 		.back-arrow.textGlow &#8592;
-	.page__content
+	.page__content(v-show="isLoaded")
 		.songs__items
 			router-link.song.neuroInput(
 				:to="{ name: 'EditSong', params: { title: song.title, song: song } }"
@@ -19,11 +19,10 @@
 			router-link(to="/AddSong") Create New Song
 </template>
 <script>
-//import Preloader from "vuex";
 import { mapGetters, mapMutations } from "vuex";
 export default {
 	components: {
-		PreloaderSongs: () => import('../components/Preloader')
+		PreloaderSongs: () => import("../components/Preloader")
 	},
 	data: () => ({
 		isLoaded: false
@@ -32,17 +31,18 @@ export default {
 		...mapGetters(["songs"])
 	},
 	methods: {
-		...mapMutations(["LOAD_SONG", "SET_INFO_MESSAGE"]),
+		...mapMutations(["LOAD_SONG", "SET_INFO_MESSAGE", "SAVE_LAST_SONG"]),
 		loadSong(song) {
 			this.LOAD_SONG(song);
 			this.SET_INFO_MESSAGE("song loaded");
+			this.SAVE_LAST_SONG(song);
 			this.$router.push("/");
 		}
 	},
 	mounted() {
 		setTimeout(() => {
 			this.isLoaded = true;
-		}, 1500);
+		}, 1000);
 	}
 };
 </script>

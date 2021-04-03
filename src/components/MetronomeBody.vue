@@ -18,8 +18,8 @@
 				input#volSlider(
 					type="range",
 					v-model="vol",
-					min="-50",
-					max="10",
+					min="-100",
+					max="8",
 					step="1",
 					@input="changeVol"
 				)
@@ -42,7 +42,7 @@
 		round-slider(
 			v-model="song.bpm",
 			:min="20",
-			:max="220",
+			:max="300",
 			line-cap="round",
 			radius="105",
 			:update="theming",
@@ -54,7 +54,7 @@
 <script>
 import { mapMutations, mapGetters } from "vuex";
 import controls from "../mixins/controls";
-import Beats from "../components/Beats"
+import Beats from "../components/Beats";
 export default {
 	mixins: [controls],
 	components: {
@@ -64,16 +64,17 @@ export default {
 		song: {
 			bpm: 120
 		},
-		vol: '0',
-		bpmShowModal: false,
-		message: false
+		vol: "0",
+		bpmShowModal: false
 	}),
 	methods: {
 		...mapMutations([
 			"CHANGE_CURRENT_VALS",
 			"UPDATE_SONG",
 			"CHANGE_VOL",
-			"SET_INFO_MESSAGE"
+			"SET_INFO_MESSAGE",
+			"UPDATE_THEME",
+			"LOAD_SONG"
 		]),
 		theming() {
 			this.$refs.bpm.classList.add("textGlow");
@@ -92,18 +93,41 @@ export default {
 			this.SET_INFO_MESSAGE("song updated");
 			this.UPDATE_SONG(song);
 		},
+		loadLastSong() {
+			const song = this.lastSong;
+			if (song) this.LOAD_SONG(song);
+			else
+				this.LOAD_SONG({
+					id: "0aaaaaaaa",
+					author: "Pantera",
+					title: "Walk",
+					bpm: 120,
+					beats: "4",
+					size: "4",
+					sFirstBeat: true
+				});
+		},
 		async save() {
+			this.loadLastSong();
 			await this.$store.dispatch("saveToFb");
 		}
 	},
 	computed: {
-		...mapGetters(["volume", "currentSong", "user"])
+		...mapGetters(["volume", "currentSong", "user", "lastSong"])
 	},
 	mounted() {
 		this.song.bpm = this.currentSong.bpm;
 		this.bpmHistory = [120];
 		this.vol = this.volume;
-		if (this.user) this.save();
+
+		this.$store.subscribe(mutation => {
+			if (mutation.type === "CHANGE_CURRENT_BPM")
+				this.song.bpm = this.currentSong.bpm;
+		});
+
+		setTimeout(() => {
+			this.UPDATE_THEME();
+		}, 2000);
 	},
 	watch: {
 		bpmShowModal() {

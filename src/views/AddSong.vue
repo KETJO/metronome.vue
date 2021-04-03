@@ -69,12 +69,14 @@ export default {
 			"ADD_SONG",
 			"INCREASE_ID",
 			"LOAD_SONG",
-			"SET_INFO_MESSAGE"
+			"SET_INFO_MESSAGE",
+			"SAVE_LAST_SONG"
 		]),
 		addSong() {
 			this.song.id = uniqid();
 			this.ADD_SONG({ ...this.song });
 			this.LOAD_SONG(this.song);
+			this.SAVE_LAST_SONG(this.song);
 			this.$router.push("/");
 			this.SET_INFO_MESSAGE("song added");
 		},
@@ -83,7 +85,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(["sizesRange", "currentSong", "defaultSong"])
+		...mapGetters(["sizesRange", "currentSong"])
 	},
 	mounted() {
 		setTimeout(() => {
