@@ -1,0 +1,17 @@
+@mixin box-glow {
+  box-shadow: 0px 0px 30px $akcentLight;
+}
+@mixin text-glow {
+  text-shadow: 0px 0px 25px $akcentLight;
+}
+@mixin neuro {
+  background: var(--bgOutpressed);
+  box-shadow: 5px 5px 8px var(--boxShadowDark),
+    -2px -5px 10px var(--boxShadowLight);
+}
+@mixin neuro-pressed {
+  background: var(--bgPressed);
+  box-shadow: inset 0px 15px 20px var(--boxShadowDark),
+    inset 0px -5px 30px var(--boxShadowLight), 5px 5px 10px var(--boxShadowDark),
+    -5px -5px 10px var(--boxShadowLight);
+}

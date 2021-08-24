@@ -1,20 +1,33 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import RoundSlider from 'vue-round-slider'
-import firebase from 'firebase/app'
-import Vuelidate from 'vuelidate'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
 
+import RoundSlider from "vue-round-slider";
+import firebase from "firebase/app";
+import Vuelidate from "vuelidate";
 
-import 'firebase/auth'
-import 'firebase/database'
-import './registerServiceWorker'
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-Vue.use(RoundSlider)
-Vue.use(Vuelidate)
+import "firebase/auth";
+import "firebase/database";
+import "./registerServiceWorker";
 
-Vue.config.productionTip = false
+//custom components
+Vue.component("Icon", () => import("./components/icon/Icon"));
+Vue.component("NeuroInputText", () =>
+  import("./components/neuro-input-text/NeuroInputText")
+);
+
+Vue.use(RoundSlider);
+Vue.use(Vuelidate);
+
+library.add(faUserSecret);
+Vue.component("font-awesome-icon", FontAwesomeIcon);
+
+Vue.config.productionTip = false;
 
 firebase.initializeApp({
   apiKey: "AIzaSyBwA5_urwfnrcQ_gxuzKqC0hF4jUB7Cfi0",
@@ -24,18 +37,11 @@ firebase.initializeApp({
   storageBucket: "metronome-6e1bd.appspot.com",
   messagingSenderId: "976550974028",
   appId: "1:976550974028:web:d0e1b106a563b7ee6e9ae9",
-  measurementId: "G-4ML26JDBG7"
-})
+  measurementId: "G-4ML26JDBG7",
+});
 new Vue({
   router,
   store,
 
-  render: h => h(App)
-  }).$mount('#app')
-
-
-
-
-
-
-
+  render: (h) => h(App),
+}).$mount("#app");

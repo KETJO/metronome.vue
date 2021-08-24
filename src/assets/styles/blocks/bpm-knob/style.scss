@@ -1,0 +1,52 @@
+.knob {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 5px 15px 2px var(--mainBg), 0 0 0 12px $textGrey;
+  transform: rotate(45deg);
+  align-self: center;
+  @include MW320 {
+    width: 170px;
+    height: 170px;
+  }
+}
+//hard rewrite knob style
+path {
+  stroke: transparent !important;
+}
+.rs-safari,
+.rs-control,
+.rs-svg-mode,
+.rs-animation {
+  width: 170px !important;
+  height: 170px !important;
+}
+.rs-container,
+.rs-full {
+  width: 170px !important;
+  height: 170px !important;
+}
+.rs-handle {
+  width: 35px !important;
+  height: 35px !important;
+  background: var(--mainDark) !important;
+  box-shadow: inset 0px 15px 20px var(--boxShadowDark),
+    inset 0px -15px 30px var(--boxShadowLight) !important;
+  margin: -10px 7px 0px !important;
+}
+.rs-handle.rs-move {
+  cursor: default !important;
+}
+.rs-tooltip,
+.rs-tooltip-text,
+.rs-edit {
+  display: none !important;
+}
+.rs-animation .rs-transition {
+  transition: all 1s linear 0s !important;
+}

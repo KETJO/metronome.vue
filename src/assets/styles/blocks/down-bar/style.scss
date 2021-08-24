@@ -1,0 +1,22 @@
+.down-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  @include MW500 {
+    margin-top: 1rem;
+  }
+  &__sounds {
+    width: 10rem;
+    @media screen and (max-width: 320px) {
+      width: 8rem;
+    }
+  }
+  &__tap {
+    color: $akcentLight;
+    text-decoration: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+}

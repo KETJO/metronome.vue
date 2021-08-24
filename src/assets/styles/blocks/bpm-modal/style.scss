@@ -1,0 +1,65 @@
+.bpm-modal {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: $zIndexMin;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    .icon {
+      content: "";
+      position: absolute;
+      top: -2rem;
+      right: -2rem;
+      background: $akcentLight;
+      color: #fff;
+      border-radius: 50%;
+      width: 4rem;
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  &__info {
+    color: $akcentLight;
+    margin-bottom: 3rem;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 20%;
+  }
+  input {
+    border: solid 1px $akcentLight;
+    padding: 2rem;
+    font-size: 3rem;
+    width: 15rem;
+    text-align: center;
+    border-radius: 10px;
+    color: white;
+    background-color: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    &:focus {
+      @include box-glow;
+      -webkit-appearance: none;
+    }
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  }
+}

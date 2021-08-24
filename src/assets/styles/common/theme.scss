@@ -1,0 +1,14 @@
+html {
+  --mainBg: #212529;
+  --boxShadowDark: #111315;
+  --boxShadowLight: #31373d;
+  --bgOutpressed: #212529;
+  --bgPressed: linear-gradient(145deg, #1e2125, #23282c);
+  &[data-theme="light"] {
+    --mainBg: #ecf0f3;
+    --boxShadowDark: #c9cccf;
+    --boxShadowLight: #ffffff;
+    --bgOutpressed: #ecf0f3;
+    --bgPressed: linear-gradient(145deg, #d4d8db, #fdffff);
+  }
+}

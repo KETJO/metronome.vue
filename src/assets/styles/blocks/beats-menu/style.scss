@@ -1,0 +1,44 @@
+.beats-menu {
+  $self: &;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  transform: translateX(-100vw);
+  background-color: var(--mainBg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 4rem;
+  transition: 0.2s ease-in-out transform;
+  @media screen and (max-width: 576px) {
+    padding: 2rem;
+  }
+  &--active {
+    transform: translateX(0vw);
+  }
+  &__element {
+    width: 100%;
+    margin-bottom: 4rem;
+    &--small-margin {
+      margin-bottom: 2rem;
+    }
+    @media screen and (max-width: 576px) {
+      margin-bottom: 2rem;
+    }
+  }
+  &__size-items {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__size-item {
+    font-size: 2rem;
+  }
+}
+@each $width, $blockWidth in $menuWidthBreakpoints {
+  @media screen and (max-width: $width) {
+    .beats-menu {
+      width: $blockWidth;
+    }
+  }
+}

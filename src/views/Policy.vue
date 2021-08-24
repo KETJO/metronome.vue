@@ -118,5 +118,4 @@ export default {};
 			width: 95%
 	a
 		align-self: flex-end
-		text-transform: uppercase
-</style>
+		text-transform: uppercase</style>

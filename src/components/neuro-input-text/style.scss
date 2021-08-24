@@ -1,0 +1,33 @@
+.neuro-input-text {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 30px;
+  label {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+  }
+  input {
+    @include neuro-pressed;
+    padding: 1.5rem;
+    color: $textGrey;
+    font-size: 1.5rem;
+    width: 100%;
+    border: solid var(--mainBg) 0.2rem;
+    &::placeholder {
+      opacity: 0.4;
+    }
+  }
+  &__message {
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    font-size: 1.5rem;
+    &--error {
+      color: $error;
+    }
+    &--warn {
+      color: $orange;
+    }
+  }
+}

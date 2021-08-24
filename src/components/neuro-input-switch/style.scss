@@ -1,0 +1,103 @@
+.neuro-input-switch {
+  $self: &;
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 50px;
+  @media screen and (max-width: 576px) {
+    width: 70px;
+    height: 40px;
+  }
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    border: none;
+    &:checked {
+      & + #{$self}__slider {
+        &:before {
+          -webkit-transform: translateX(30px);
+          -ms-transform: translateX(30px);
+          transform: translateX(30px);
+          @media screen and (max-width: 576px) {
+            -webkit-transform: translateX(28px);
+            -ms-transform: translateX(28px);
+            transform: translateX(28px);
+          }
+        }
+      }
+    }
+  }
+  &.theme {
+    #{$self}__slider {
+      &:before {
+        font-weight: 800;
+        font-size: 1.8rem;
+        content: "🔆";
+      }
+    }
+    input {
+      &:checked {
+        & + #{$self}__slider {
+          &:before {
+            font-size: 1.8rem;
+            content: "🌙";
+          }
+        }
+      }
+    }
+  }
+  &.stress-beat-switch {
+    @media screen and (max-width: 576px) {
+      font-size: 1rem;
+    }
+    #{$self}__slider {
+      &:before {
+        font-weight: 800;
+        content: "off";
+        text-transform: uppercase;
+      }
+    }
+    input {
+      &:checked {
+        & + #{$self}__slider {
+          &:before {
+            text-transform: uppercase;
+            font-weight: 800;
+            content: "on";
+            color: $akcentLight;
+          }
+        }
+      }
+    }
+  }
+  &__slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: 0.4s transform;
+    transition: 0.4s transform;
+    border: solid var(--mainBg) 2px;
+    @include neuro-pressed;
+    .round {
+      border-radius: 34px;
+    }
+    &:before {
+      @include neuro;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      content: "";
+      height: 80%;
+      width: 50%;
+      left: 4px;
+      bottom: 4px;
+      -webkit-transition: 0.4s transform;
+      transition: 0.4s transform;
+    }
+  }
+}

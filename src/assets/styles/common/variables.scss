@@ -1,0 +1,16 @@
+$akcentLight: #109ef1;
+$yellowLight: rgb(253, 255, 122);
+$textGrey: #74797d;
+$error: rgb(218, 77, 77);
+$orange: #ff8000;
+
+$zIndexMin: 10;
+$zIndexAverage: 50;
+$zIndexMax: 100;
+
+$menuWidthBreakpoints: (
+  3000px: 35vw,
+  1200px: 50vw,
+  800px: 80vw,
+  350px: 100vw,
+);

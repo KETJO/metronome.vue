@@ -1,0 +1,35 @@
+.neuro-button {
+  width: 6rem;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 800;
+  border-radius: 10px;
+  @include neuro;
+  &--pressed {
+    @include neuro-pressed;
+    @include text-glow;
+    color: $akcentLight;
+  }
+  &--bordered {
+    border: 0.4rem solid var(--mainBg);
+    @media screen and (max-width: 576px) {
+      border: 0.2rem solid var(--mainBg);
+    }
+  }
+  &--scalable {
+    @media screen and (max-width: 576px) {
+      width: 4.5rem;
+      height: 4.5rem;
+      font-size: 1.5rem;
+    }
+  }
+  input {
+    display: none;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}

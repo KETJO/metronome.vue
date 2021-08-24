@@ -1,0 +1,9 @@
+.link {
+  display: inline-flex;
+  &--l2 {
+    font-size: 2rem;
+  }
+  &--hover-akcent a:hover {
+    color: $akcentLight;
+  }
+}
